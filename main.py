@@ -3,8 +3,10 @@ from pygame.locals import  *
 
 pygame.init()
 
-pantalla = pygame.display.set_mode((800, 700)) #Basicamente crea una ventana de 500x400
+pantalla = pygame.display.set_mode((750, 750)) #Basicamente crea una ventana de 750x750
 pygame.display.set_caption("Risky Road")
+logo = pygame.image.load("img/westernlogo.png") #Esto carga la imagen en nuestro juego
+pygame.display.set_icon(logo) #Basicamente esto carga el logo como icono del juego
 
 #Declaramos algunos colores basicos que vamos a emplear
 BLANCO = (255,255,255)
