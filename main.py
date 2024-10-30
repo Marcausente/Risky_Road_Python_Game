@@ -16,8 +16,11 @@ VERDE = (47, 197, 33, 1)
 AZUL = (4, 19, 177, 1)
 GREY = (76, 76, 78, 1)
 
+
 fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
+
+quieto = pygame.image.load("img/Character.png")
 
 while True: #Este bucle se enarga de mantenter la pantalla abierta, si no se cierra solo
     for event in pygame.event.get():
