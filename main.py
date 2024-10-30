@@ -1,6 +1,8 @@
 import pygame, sys
 from pygame.locals import  *
 
+#Test
+
 pygame.init()
 
 pantalla = pygame.display.set_mode((750, 750)) #Basicamente crea una ventana de 750x750
