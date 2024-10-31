@@ -25,6 +25,9 @@ caminaderecha2 = pygame.image.load("img/MainCharacter/MainDerechaWalking2.png")
 quietoizquierda = pygame.image.load("img/MainCharacter/MainIzquierdaStanding.png")
 caminarizquierda1 = pygame.image.load("img/MainCharacter/MainIzquierdaWalking1.png")
 caminarizquierda2 = pygame.image.load("img/MainCharacter/MainIzquierdaWalking2.png")
+arribaizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainAWStanding.png")
+arribaizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingAW1.png")
+
 
 # Redimensionamos las imágenes del personaje
 quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
