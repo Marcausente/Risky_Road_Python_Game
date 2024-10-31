@@ -1,42 +1,60 @@
 import pygame, sys
-from pygame.locals import  *
+from pygame.locals import *
 
 pygame.init()
 
-pantalla = pygame.display.set_mode((750, 750)) #Basicamente crea una ventana de 750x750
+pantalla = pygame.display.set_mode((750, 750))  # Ventana de 750x750
 pygame.display.set_caption("Risky Road")
-logo = pygame.image.load("img/westernlogo.png") #Esto carga la imagen en nuestro juego
-pygame.display.set_icon(logo) #Basicamente esto carga el logo como icono del juego
+logo = pygame.image.load("img/westernlogo.png")  # Carga el logo
+pygame.display.set_icon(logo)
 
-#Declaramos algunos colores basicos que vamos a emplear
-BLANCO = (255,255,255)
-NEGRO = (0,0,0,0)
-ROJO = (189, 23, 20, 1)
-VERDE = (47, 197, 33, 1)
-AZUL = (4, 19, 177, 1)
-GREY = (76, 76, 78, 1)
-
-
+# Carga el fondo y el personaje
 fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
-quieto = pygame.image.load("img/MainCharacter/MainUpStanding.png")
-quieto = pygame.transform.scale(quieto, (60, 60)) #Redimensiona al personaje porque si no no aparece
 
-pos_x, pos_y = 375, 375 #Esto nos coloca al personaje en el centro de la pantalla
-velocidad = 0.15 #Velocidad, es baja porque es pequeño el mapa
+# Carga de imágenes del personaje
+quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
+caminaarriba1 = pygame.image.load("img/MainCharacter/MainUpWalking1.png")
+caminaarriba2 = pygame.image.load("img/MainCharacter/MainUpWalking2.png")
 
-while True: #Este bucle se enarga de mantenter la pantalla abierta, si no se cierra solo
+# Redimensionamos las imágenes del personaje
+quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
+caminaarriba1 = pygame.transform.scale(caminaarriba1, (60, 60))
+caminaarriba2 = pygame.transform.scale(caminaarriba2, (60, 60))
+
+# Lista de imágenes para la animación
+imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
+indice_anim = 0  # Índice de la imagen actual en la animación
+tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la animación
+
+# Posición y velocidad del personaje
+pos_x, pos_y = 375, 375  # Centro de la pantalla
+velocidad = 0.15  # Velocidad de movimiento
+
+# Tamaño de la pantalla y del personaje
+ancho_pantalla, alto_pantalla = pantalla.get_size()
+ancho_personaje, alto_personaje = quietoarriba.get_size()
+
+while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
-    # Basicamente mira que tecla hay presionada
+    # Teclas presionadas
     teclas = pygame.key.get_pressed()
 
     # Movimiento del personaje
     if teclas[K_w]:
         pos_y -= velocidad
+        # Actualizar la animación cada 200 ms
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
+            tiempo_animacion = pygame.time.get_ticks()
+
+        imagen_actual = imagenes_caminar_arriba[indice_anim]
+    else:
+        imagen_actual = quietoarriba  # Si no se presiona "W", mostrar la imagen quieto
     if teclas[K_s]:
         pos_y += velocidad
     if teclas[K_a]:
@@ -44,8 +62,12 @@ while True: #Este bucle se enarga de mantenter la pantalla abierta, si no se cie
     if teclas[K_d]:
         pos_x += velocidad
 
+    # Limitar la posición dentro de los bordes de la pantalla
+    pos_x = max(0, min(pos_x, ancho_pantalla - ancho_personaje))
+    pos_y = max(0, min(pos_y, alto_pantalla - alto_personaje))
+
     # Dibujar el fondo y el personaje en la nueva posición
     pantalla.blit(fondo, (0, 0))  # Dibuja el fondo
-    pantalla.blit(quieto, (pos_x, pos_y))  # Dibuja el personaje
+    pantalla.blit(imagen_actual, (pos_x, pos_y))  # Dibuja la imagen actual del personaje
 
-    pygame.display.update()  # Actualiza la pantallawa
+    pygame.display.update()  # Actualiza la pantalla
