@@ -55,6 +55,14 @@ arribaizquierdaquieto = pygame.transform.scale(arribaizquierdaquieto, (60,60))
 arribaderechaquieto = pygame.transform.scale(arribaderechaquieto, (60,60))
 abajoderechaquieto = pygame.transform.scale(abajoderechaquieto,(60,60) )
 abajoizquierdaquieto = pygame.transform.scale(abajoizquierdaquieto, (60,60))
+abajoderecha1 = pygame.transform.scale(abajoderecha1, (60,60))
+abajoderecha2 = pygame.transform.scale(abajoderecha2, (60,60))
+abajoizquierda1 = pygame.transform.scale(abajoizquierda1, (60,60))
+abajoizquierda2 = pygame.transform.scale(abajoizquierda2, (60,60))
+arribaizquierda1 = pygame.transform.scale(arribaizquierda1, (60,60))
+arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60,60))
+arribaderecha2 = pygame.transform.scale(arribaderecha2, (60,60))
+arribaderecha1 = pygame.transform.scale(arribaderecha1, (60,60))
 
 
 # Lista de imágenes para la animación
