@@ -1,8 +1,6 @@
 import pygame, sys
 from pygame.locals import  *
 
-#Test
-
 pygame.init()
 
 pantalla = pygame.display.set_mode((750, 750)) #Basicamente crea una ventana de 750x750
@@ -22,7 +20,7 @@ GREY = (76, 76, 78, 1)
 fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
 
-quieto = pygame.image.load("img/Character.png")
+quieto = pygame.image.load("img/MainCharacter/MainUpStanding.png")
 
 while True: #Este bucle se enarga de mantenter la pantalla abierta, si no se cierra solo
     for event in pygame.event.get():
