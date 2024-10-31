@@ -51,13 +51,14 @@ tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la ani
 # Posición y velocidad del personaje
 pos_x, pos_y = 375, 375  # Centro de la pantalla
 velocidad = 0.15  # Velocidad de movimiento
+velocidad_diagonal = velocidad / 1.414  # Ajuste para movimiento diagonal
 
 # Tamaño de la pantalla y del personaje
 ancho_pantalla, alto_pantalla = pantalla.get_size()
 ancho_personaje, alto_personaje = quietoarriba.get_size()
 
 # Variable para registrar la última dirección
-ultima_direccion = "arriba"  # Se inicializa con la dirección hacia arriba
+ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -67,57 +68,102 @@ while True:  # Bucle para mantener la pantalla abierta
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
+    movido = False  # Bandera para verificar si el personaje se ha movido
 
-    # Movimiento del personaje y animación
-    if teclas[K_w]:
-        pos_y -= velocidad
+    # Movimiento diagonal y animación
+    if teclas[K_w] and teclas[K_a]:  # Arriba a la izquierda
+        pos_y -= velocidad_diagonal
+        pos_x -= velocidad_diagonal
         ultima_direccion = "arriba"
+        movido = True
         if pygame.time.get_ticks() - tiempo_animacion > 100:
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_arriba[indice_anim]
 
-    elif teclas[K_s]:
-        pos_y += velocidad
+    elif teclas[K_w] and teclas[K_d]:  # Arriba a la derecha
+        pos_y -= velocidad_diagonal
+        pos_x += velocidad_diagonal
+        ultima_direccion = "arriba"
+        movido = True
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
+            tiempo_animacion = pygame.time.get_ticks()
+        imagen_actual = imagenes_caminar_arriba[indice_anim]
+
+    elif teclas[K_s] and teclas[K_a]:  # Abajo a la izquierda
+        pos_y += velocidad_diagonal
+        pos_x -= velocidad_diagonal
         ultima_direccion = "abajo"
+        movido = True
         if pygame.time.get_ticks() - tiempo_animacion > 100:
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_abajo)
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_abajo[indice_anim]
 
-    elif teclas[K_a]:
+    elif teclas[K_s] and teclas[K_d]:  # Abajo a la derecha
+        pos_y += velocidad_diagonal
+        pos_x += velocidad_diagonal
+        ultima_direccion = "abajo"
+        movido = True
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_abajo)
+            tiempo_animacion = pygame.time.get_ticks()
+        imagen_actual = imagenes_caminar_abajo[indice_anim]
+
+    # Movimiento en direcciones simples
+    elif teclas[K_w]:  # Arriba
+        pos_y -= velocidad
+        ultima_direccion = "arriba"
+        movido = True
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
+            tiempo_animacion = pygame.time.get_ticks()
+        imagen_actual = imagenes_caminar_arriba[indice_anim]
+
+    elif teclas[K_s]:  # Abajo
+        pos_y += velocidad
+        ultima_direccion = "abajo"
+        movido = True
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_abajo)
+            tiempo_animacion = pygame.time.get_ticks()
+        imagen_actual = imagenes_caminar_abajo[indice_anim]
+
+    elif teclas[K_a]:  # Izquierda
         pos_x -= velocidad
         ultima_direccion = "izquierda"
+        movido = True
         if pygame.time.get_ticks() - tiempo_animacion > 100:
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_izquierda)
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_izquierda[indice_anim]
 
-    elif teclas[K_d]:
+    elif teclas[K_d]:  # Derecha
         pos_x += velocidad
         ultima_direccion = "derecha"
+        movido = True
         if pygame.time.get_ticks() - tiempo_animacion > 100:
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_derecha)
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_derecha[indice_anim]
 
-    else:
-        # Selecciona la imagen quieta según la última dirección
+    # Si no se ha movido, se muestra la imagen de quieto según la última dirección
+    if not movido:
         if ultima_direccion == "arriba":
             imagen_actual = quietoarriba
         elif ultima_direccion == "abajo":
             imagen_actual = quietoabajo
-        elif ultima_direccion == "derecha":
-            imagen_actual = quietoderecha
         elif ultima_direccion == "izquierda":
             imagen_actual = quietoizquierda
+        elif ultima_direccion == "derecha":
+            imagen_actual = quietoderecha
 
     # Limitar la posición dentro de los bordes de la pantalla
     pos_x = max(0, min(pos_x, ancho_pantalla - ancho_personaje))
     pos_y = max(0, min(pos_y, alto_pantalla - alto_personaje))
 
-    # Dibujar el fondo y el personaje en la nueva posición
-    pantalla.blit(fondo, (0, 0))  # Dibuja el fondo
-    pantalla.blit(imagen_actual, (pos_x, pos_y))  # Dibuja la imagen actual del personaje
-
-    pygame.display.update()  # Actualiza la pantalla
+    # Dibujar el fondo y el personaje
+    pantalla.blit(fondo, (0, 0))
+    pantalla.blit(imagen_actual, (pos_x, pos_y))
+    pygame.display.flip()
