@@ -16,14 +16,23 @@ pantalla.blit(fondo, (0, 0))
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
 caminaarriba1 = pygame.image.load("img/MainCharacter/MainUpWalking1.png")
 caminaarriba2 = pygame.image.load("img/MainCharacter/MainUpWalking2.png")
+quietoabajo = pygame.image.load("img\MainCharacter\MainDownStanding.png")
+caminaabajo1 = pygame.image.load("img\MainCharacter\MainDownWalking1.png")
+caminaabajo2 = pygame.image.load("img\MainCharacter\MainDownWalking2.png")
+
 
 # Redimensionamos las imágenes del personaje
 quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
 caminaarriba1 = pygame.transform.scale(caminaarriba1, (60, 60))
 caminaarriba2 = pygame.transform.scale(caminaarriba2, (60, 60))
+quietoabajo = pygame.transform.scale(quietoabajo, (60,60))
+caminaabajo1 = pygame.transform.scale(caminaabajo1, (60,60))
+caminaabajo2 = pygame.transform.scale(caminaabajo2, (60,60))
+
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
+imagenes_caminar_abajo = [quietoabajo, caminaabajo1, quietoabajo, caminaabajo2]
 indice_anim = 0  # Índice de la imagen actual en la animación
 tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la animación
 
@@ -57,10 +66,26 @@ while True:  # Bucle para mantener la pantalla abierta
         imagen_actual = quietoarriba  # Si no se presiona "W", mostrar la imagen quieto
     if teclas[K_s]:
         pos_y += velocidad
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_abajo)
+            tiempo_animacion = pygame.time.get_ticks()
+
+        imagen_actual = imagenes_caminar_abajo[indice_anim]
+
     if teclas[K_a]:
         pos_x -= velocidad
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
+            tiempo_animacion = pygame.time.get_ticks()
+
+        imagen_actual = imagenes_caminar_arriba[indice_anim]
     if teclas[K_d]:
         pos_x += velocidad
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
+            tiempo_animacion = pygame.time.get_ticks()
+
+        imagen_actual = imagenes_caminar_arriba[indice_anim]
 
     # Limitar la posición dentro de los bordes de la pantalla
     pos_x = max(0, min(pos_x, ancho_pantalla - ancho_personaje))
