@@ -51,6 +51,11 @@ caminaderecha2 = pygame.transform.scale(caminaderecha2, (60, 60))
 quietoizquierda = pygame.transform.scale(quietoizquierda, (60, 60))
 caminarizquierda1 = pygame.transform.scale(caminarizquierda1, (60, 60))
 caminarizquierda2 = pygame.transform.scale(caminarizquierda2, (60, 60))
+arribaizquierdaquieto = pygame.transform.scale(arribaizquierdaquieto, (60,60))
+arribaderechaquieto = pygame.transform.scale(arribaderechaquieto, (60,60))
+abajoderechaquieto = pygame.transform.scale(abajoderechaquieto,(60,60) )
+abajoizquierdaquieto = pygame.transform.scale(abajoizquierdaquieto, (60,60))
+
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
