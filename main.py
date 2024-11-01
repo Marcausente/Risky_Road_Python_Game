@@ -153,6 +153,13 @@ def mover_enemigos():
             enemigo["x"] += enemigo["velocidad"] * (dx / distancia)
             enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
+def detectar_colision():
+    for enemigo in enemigos:
+        distancia = math.hypot(enemigo["x"] - pos_x, enemigo["y"] - pos_y)
+        if distancia < ancho_personaje / 2:
+            return True  # Colisión detectada
+    return False
+
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -162,6 +169,24 @@ while True:  # Bucle para mantener la pantalla abierta
             # Disparar proyectil en la dirección actual
             proyectiles.append({"x": pos_x + ancho_personaje // 2, "y": pos_y + alto_personaje // 2, "direccion": ultima_direccion})
             shot_sound.play()
+
+    # Dibujar fondo y personaje
+    pantalla.blit(fondo, (0, 0))
+
+    # Lógica para generar enemigos cada cierto tiempo
+    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 2000:  # Cada 2 segundos
+        generar_enemigo()
+        tiempo_spawn_enemigos = pygame.time.get_ticks()
+
+    # Mover enemigos y verificar colisiones
+    mover_enemigos()
+    if detectar_colision():
+        pygame.quit()
+        sys.exit() # Fin del juego al detectar colisión
+
+    pantalla.blit(fondo, (0, 0))
+    for enemigo in enemigos:
+        pygame.draw.rect(pantalla, (255, 0, 0), (enemigo["x"], enemigo["y"], 20, 20))
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
@@ -236,8 +261,6 @@ while True:  # Bucle para mantener la pantalla abierta
     elif pos_y > alto_pantalla - alto_personaje:
         pos_y = alto_pantalla - alto_personaje
 
-    # Dibujar fondo y personaje
-    pantalla.blit(fondo, (0, 0))
     if movido:
         tiempo_actual = pygame.time.get_ticks()
         if tiempo_actual - tiempo_animacion > 200:  # Cambia la imagen cada 200 ms
