@@ -101,7 +101,10 @@ pygame.mixer.music.load("Sounds/GameMusic.mp3")
 pygame.mixer.music.play(-1) #-1 hace que la musicia se reproduzca de forma infinita
 
 #Esto es para hacer los controles de volumen, para que suba o baje segun queramos
-sound_up = pygame.image.load()
+sound_up = pygame.image.load("img/Sound_UP.png")
+sound_down = pygame.image.load("img/Sound_DOWN.png")
+sound_on = pygame.image.load("img/Sound_ON.png")
+sound_off = pygame.image.load("img/Sound_OFF.png")
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
