@@ -11,11 +11,11 @@ pygame.display.set_icon(logo)
 # Carga el fondo y el personaje
 fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
-#Carga de la bala
+# Carga de la bala
 bullet = pygame.image.load("img/bullet.png")
-bullet = pygame.transform.scale(bullet,(20,20))
+bullet = pygame.transform.scale(bullet, (20, 20))
 
-saved = 1.0 #Variable para guardar el sonido actual, la usamos luego en controles
+saved = 1.0  # Variable para guardar el sonido actual, la usamos luego en controles
 
 # Carga de imágenes del personaje
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
@@ -56,19 +56,18 @@ caminaderecha2 = pygame.transform.scale(caminaderecha2, (60, 60))
 quietoizquierda = pygame.transform.scale(quietoizquierda, (60, 60))
 caminarizquierda1 = pygame.transform.scale(caminarizquierda1, (60, 60))
 caminarizquierda2 = pygame.transform.scale(caminarizquierda2, (60, 60))
-arribaizquierdaquieto = pygame.transform.scale(arribaizquierdaquieto, (60,60))
-arribaderechaquieto = pygame.transform.scale(arribaderechaquieto, (60,60))
-abajoderechaquieto = pygame.transform.scale(abajoderechaquieto,(60,60) )
-abajoizquierdaquieto = pygame.transform.scale(abajoizquierdaquieto, (60,60))
-abajoderecha1 = pygame.transform.scale(abajoderecha1, (60,60))
-abajoderecha2 = pygame.transform.scale(abajoderecha2, (60,60))
-abajoizquierda1 = pygame.transform.scale(abajoizquierda1, (60,60))
-abajoizquierda2 = pygame.transform.scale(abajoizquierda2, (60,60))
-arribaizquierda1 = pygame.transform.scale(arribaizquierda1, (60,60))
-arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60,60))
-arribaderecha2 = pygame.transform.scale(arribaderecha2, (60,60))
-arribaderecha1 = pygame.transform.scale(arribaderecha1, (60,60))
-
+arribaizquierdaquieto = pygame.transform.scale(arribaizquierdaquieto, (60, 60))
+arribaderechaquieto = pygame.transform.scale(arribaderechaquieto, (60, 60))
+abajoderechaquieto = pygame.transform.scale(abajoderechaquieto, (60, 60))
+abajoizquierdaquieto = pygame.transform.scale(abajoizquierdaquieto, (60, 60))
+abajoderecha1 = pygame.transform.scale(abajoderecha1, (60, 60))
+abajoderecha2 = pygame.transform.scale(abajoderecha2, (60, 60))
+abajoizquierda1 = pygame.transform.scale(abajoizquierda1, (60, 60))
+abajoizquierda2 = pygame.transform.scale(abajoizquierda2, (60, 60))
+arribaizquierda1 = pygame.transform.scale(arribaizquierda1, (60, 60))
+arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60, 60))
+arribaderecha2 = pygame.transform.scale(arribaderecha2, (60, 60))
+arribaderecha1 = pygame.transform.scale(arribaderecha1, (60, 60))
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
@@ -98,20 +97,22 @@ ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 proyectiles = []
 velocidad_bala = 10
 
-#Esto nos carga la musica de fondo
+# Esto nos carga la musica de fondo
 pygame.mixer.music.load("Sounds/GameMusic.mp3")
-pygame.mixer.music.play(-1) #-1 hace que la musicia se reproduzca de forma infinita
+pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
 
-#Esto es para hacer los controles de volumen, para que suba o baje segun queramos
+# Esto es para hacer los controles de volumen, para que suba o baje según queramos
 sound_up = pygame.image.load("img/Sound_UP.png")
 sound_down = pygame.image.load("img/Sound_DOWN.png")
 sound_on = pygame.image.load("img/Sound_ON.png")
 sound_off = pygame.image.load("img/Sound_OFF.png")
-sound_up = pygame.transform.scale(sound_up, (60,60))
-sound_down = pygame.transform.scale(sound_down, (60,60))
-sound_off = pygame.transform.scale(sound_off, (60,60))
-sound_on = pygame.transform.scale(sound_on, (60,60))
+sound_up = pygame.transform.scale(sound_up, (60, 60))
+sound_down = pygame.transform.scale(sound_down, (60, 60))
+sound_off = pygame.transform.scale(sound_off, (60, 60))
+sound_on = pygame.transform.scale(sound_on, (60, 60))
 
+# Variable para el icono de sonido actual
+current_sound_icon = None
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -132,104 +133,100 @@ while True:  # Bucle para mantener la pantalla abierta
         pos_x -= velocidad_diagonal
         ultima_direccion = "arribaizquierda"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_arriba_izquierda)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_arriba_izquierda[indice_anim]
-
     elif teclas[K_w] and teclas[K_d]:  # Arriba a la derecha
         pos_y -= velocidad_diagonal
         pos_x += velocidad_diagonal
         ultima_direccion = "arribaderecha"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_arriba_derecha)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_arriba_derecha[indice_anim]
-
-    elif teclas[K_s] and teclas[K_d]:  # Abajo a la derecha
-        pos_y += velocidad_diagonal
-        pos_x += velocidad_diagonal
-        ultima_direccion = "abajoderecha"
-        movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_abajo_derecha)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_abajo_derecha[indice_anim]
-
     elif teclas[K_s] and teclas[K_a]:  # Abajo a la izquierda
         pos_y += velocidad_diagonal
         pos_x -= velocidad_diagonal
         ultima_direccion = "abajoizquierda"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_abajo_izquierda)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_abajo_izquierda[indice_anim]
-
-    # Movimiento en una dirección y animación
+    elif teclas[K_s] and teclas[K_d]:  # Abajo a la derecha
+        pos_y += velocidad_diagonal
+        pos_x += velocidad_diagonal
+        ultima_direccion = "abajoderecha"
+        movido = True
     elif teclas[K_w]:  # Arriba
         pos_y -= velocidad
         ultima_direccion = "arriba"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_caminar_arriba[indice_anim]
-
-    elif teclas[K_s]:  # Abajo
-        pos_y += velocidad
-        ultima_direccion = "abajo"
-        movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_caminar_abajo)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_caminar_abajo[indice_anim]
-
     elif teclas[K_a]:  # Izquierda
         pos_x -= velocidad
         ultima_direccion = "izquierda"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_caminar_izquierda)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_caminar_izquierda[indice_anim]
-
+    elif teclas[K_s]:  # Abajo
+        pos_y += velocidad
+        ultima_direccion = "abajo"
+        movido = True
     elif teclas[K_d]:  # Derecha
         pos_x += velocidad
         ultima_direccion = "derecha"
         movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_caminar_derecha)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_caminar_derecha[indice_anim]
 
-    if teclas[K_DOWN] and pygame.mixer_music.get_volume() > 0.0: #Si se presiona flecha abajo y la musica no esta mute
+    # Control de volumen
+    if teclas[K_DOWN] and pygame.mixer_music.get_volume() > 0.0:  # Si se presiona flecha abajo y la música no está mute
         pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() - 0.01)
-        pantalla.blit(sound_down, (10 , 10))
+        current_sound_icon = sound_down
         if pygame.mixer_music.get_volume() > 0.0:
             saved = pygame.mixer.music.get_volume()
-    if teclas [K_UP] and pygame.mixer_music.get_volume() < 1.0:
+    elif teclas[K_UP] and pygame.mixer_music.get_volume() < 1.0:
         pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.01)
-        pantalla.blit(sound_up, (10,10))
+        current_sound_icon = sound_up
         saved = pygame.mixer.music.get_volume()
-    if teclas [K_RIGHT]:
+    elif teclas[K_RIGHT]:
         pygame.mixer_music.set_volume(saved)
-        pantalla.blit(sound_on, (10,10))
-    if teclas [K_LEFT]:
+        current_sound_icon = sound_on
+    elif teclas[K_LEFT]:
         pygame.mixer_music.set_volume(0.0)
-        pantalla.blit(sound_off, (10,10))
+        current_sound_icon = sound_off
+    else:
+        current_sound_icon = None  # Reset icon if no volume keys are pressed
 
-    # Si no se mueve, mostrar imagen de personaje quieto
-    if not movido:
+    # Limitar el movimiento a los bordes de la pantalla
+    if pos_x < 0:
+        pos_x = 0
+    elif pos_x > ancho_pantalla - ancho_personaje:
+        pos_x = ancho_pantalla - ancho_personaje
+    if pos_y < 0:
+        pos_y = 0
+    elif pos_y > alto_pantalla - alto_personaje:
+        pos_y = alto_pantalla - alto_personaje
+
+    # Dibujar fondo y personaje
+    pantalla.blit(fondo, (0, 0))
+    if movido:
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - tiempo_animacion > 200:  # Cambia la imagen cada 200 ms
+            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)  # Cambia la imagen
+            tiempo_animacion = tiempo_actual
+
+        if ultima_direccion == "arriba":
+            imagen_actual = imagenes_caminar_arriba[indice_anim]
+        elif ultima_direccion == "abajo":
+            imagen_actual = imagenes_caminar_abajo[indice_anim]
+        elif ultima_direccion == "derecha":
+            imagen_actual = imagenes_caminar_derecha[indice_anim]
+        elif ultima_direccion == "izquierda":
+            imagen_actual = imagenes_caminar_izquierda[indice_anim]
+        elif ultima_direccion == "arribaizquierda":
+            imagen_actual = imagenes_arriba_izquierda[indice_anim]
+        elif ultima_direccion == "arribaderecha":
+            imagen_actual = imagenes_arriba_derecha[indice_anim]
+        elif ultima_direccion == "abajoizquierda":
+            imagen_actual = imagenes_abajo_izquierda[indice_anim]
+        elif ultima_direccion == "abajoderecha":
+            imagen_actual = imagenes_abajo_derecha[indice_anim]
+    else:
         if ultima_direccion == "arriba":
             imagen_actual = quietoarriba
         elif ultima_direccion == "abajo":
             imagen_actual = quietoabajo
-        elif ultima_direccion == "izquierda":
-            imagen_actual = quietoizquierda
         elif ultima_direccion == "derecha":
             imagen_actual = quietoderecha
+        elif ultima_direccion == "izquierda":
+            imagen_actual = quietoizquierda
         elif ultima_direccion == "arribaizquierda":
             imagen_actual = arribaizquierdaquieto
         elif ultima_direccion == "arribaderecha":
@@ -239,49 +236,37 @@ while True:  # Bucle para mantener la pantalla abierta
         elif ultima_direccion == "abajoderecha":
             imagen_actual = abajoderechaquieto
 
-    # Limitar el movimiento a los bordes de la pantalla
-    if pos_x < 0:
-        pos_x = 0
-    elif pos_x > ancho_pantalla - ancho_personaje:
-        pos_x = ancho_pantalla - ancho_personaje
-
-    if pos_y < 0:
-        pos_y = 0
-    elif pos_y > alto_pantalla - alto_personaje:
-        pos_y = alto_pantalla - alto_personaje
-
-    # Dibujar fondo y personaje
-    pantalla.blit(fondo, (0, 0))
     pantalla.blit(imagen_actual, (pos_x, pos_y))
 
     # Actualizar y dibujar proyectiles
-    for bala in proyectiles[:]:
-        if bala["direccion"] == "arriba":
-            bala["y"] -= velocidad_bala
-        elif bala["direccion"] == "abajo":
-            bala["y"] += velocidad_bala
-        elif bala["direccion"] == "izquierda":
-            bala["x"] -= velocidad_bala
-        elif bala["direccion"] == "derecha":
-            bala["x"] += velocidad_bala
-        elif bala["direccion"] == "arribaizquierda":
-            bala["x"] -= velocidad_bala / 1.414
-            bala["y"] -= velocidad_bala / 1.414
-        elif bala["direccion"] == "arribaderecha":
-            bala["x"] += velocidad_bala / 1.414
-            bala["y"] -= velocidad_bala / 1.414
-        elif bala["direccion"] == "abajoizquierda":
-            bala["x"] -= velocidad_bala / 1.414
-            bala["y"] += velocidad_bala / 1.414
-        elif bala["direccion"] == "abajoderecha":
-            bala["x"] += velocidad_bala / 1.414
-            bala["y"] += velocidad_bala / 1.414
+    for proyectil in proyectiles:
+        if proyectil["direccion"] == "arriba":
+            proyectil["y"] -= velocidad_bala
+        elif proyectil["direccion"] == "abajo":
+            proyectil["y"] += velocidad_bala
+        elif proyectil["direccion"] == "izquierda":
+            proyectil["x"] -= velocidad_bala
+        elif proyectil["direccion"] == "derecha":
+            proyectil["x"] += velocidad_bala
+        elif proyectil["direccion"] == "arribaizquierda":
+            proyectil["x"] -= velocidad_bala / 1.414
+            proyectil["y"] -= velocidad_bala / 1.414
+        elif proyectil["direccion"] == "arribaderecha":
+            proyectil["x"] += velocidad_bala / 1.414
+            proyectil["y"] -= velocidad_bala / 1.414
+        elif proyectil["direccion"] == "abajoizquierda":
+            proyectil["x"] -= velocidad_bala / 1.414
+            proyectil["y"] += velocidad_bala / 1.414
+        elif proyectil["direccion"] == "abajoderecha":
+            proyectil["x"] += velocidad_bala / 1.414
+            proyectil["y"] += velocidad_bala / 1.414
 
-        # Esto nos borra la bala cuando sale de los bordes que si no consume mucho
-        if bala["x"] < 0 or bala["x"] > ancho_pantalla or bala["y"] < 0 or bala["y"] > alto_pantalla:
-            proyectiles.remove(bala)
-        else:
-            pantalla.blit(bullet, (bala["x"], bala["y"]))
+        # Dibuja el proyectil
+        pantalla.blit(bullet, (proyectil["x"], proyectil["y"]))
+
+    # Dibujar el icono de sonido actual
+    if current_sound_icon:
+        pantalla.blit(current_sound_icon, (10, 10))
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
