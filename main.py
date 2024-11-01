@@ -70,12 +70,16 @@ imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarri
 imagenes_caminar_abajo = [quietoabajo, caminaabajo1, quietoabajo, caminaabajo2]
 imagenes_caminar_derecha = [quietoderecha, caminaderecha1, quietoderecha, caminaderecha2]
 imagenes_caminar_izquierda = [quietoizquierda, caminarizquierda1, quietoizquierda, caminarizquierda2]
+imagenes_arriba_izquierda = [arribaizquierdaquieto, arribaizquierda1, arribaizquierdaquieto, arribaizquierda2]
+imagenes_arriba_derecha = [arribaderechaquieto, arribaderecha1, arribaderechaquieto, arribaderecha2]
+imagenes_abajo_derecha = [abajoderechaquieto, abajoderecha1, abajoderechaquieto, abajoderecha2]
+imagenes_abajo_izquierda = [abajoizquierdaquieto, abajoizquierda1, abajoizquierdaquieto, abajoizquierda2]
 indice_anim = 0  # Índice de la imagen actual en la animación
 tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la animación
 
 # Posición y velocidad del personaje
 pos_x, pos_y = 375, 375  # Centro de la pantalla
-velocidad = 0.15  # Velocidad de movimiento
+velocidad = 0.25  # Velocidad de movimiento
 velocidad_diagonal = velocidad / 1.414  # Ajuste para movimiento diagonal
 
 # Tamaño de la pantalla y del personaje
