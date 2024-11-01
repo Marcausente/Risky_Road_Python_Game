@@ -97,6 +97,9 @@ ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 proyectiles = []
 velocidad_bala = 10
 
+tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
+icono_visible = False
+
 # Esto nos carga la musica de fondo
 pygame.mixer.music.load("Sounds/GameMusic.mp3")
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
@@ -113,6 +116,7 @@ sound_on = pygame.transform.scale(sound_on, (60, 60))
 
 # Variable para el icono de sonido actual
 current_sound_icon = None
+
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -171,6 +175,8 @@ while True:  # Bucle para mantener la pantalla abierta
         current_sound_icon = sound_down
         if pygame.mixer_music.get_volume() > 0.0:
             saved = pygame.mixer.music.get_volume()
+        icono_visible = True
+        tiempo_icono_visible = pygame.time.get_ticks()
     elif teclas[K_UP] and pygame.mixer_music.get_volume() < 1.0:
         pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.01)
         current_sound_icon = sound_up
@@ -264,10 +270,10 @@ while True:  # Bucle para mantener la pantalla abierta
         # Dibuja el proyectil
         pantalla.blit(bullet, (proyectil["x"], proyectil["y"]))
 
-    # Dibujar el icono de sonido actual
+    # Esto nos printea en pantalla el sonido
     if current_sound_icon:
-        pantalla.blit(current_sound_icon, (10, 10))
+        pantalla.blit(current_sound_icon, (650, 40))
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
-    pygame.time.Clock().tick(60)
+    pygame.time.Clock().tick(60) #Me limita los fps a 60 que si no el juego hace cosas raras
