@@ -82,7 +82,7 @@ tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la ani
 
 # Posición y velocidad del personaje
 pos_x, pos_y = 375, 375  # Centro de la pantalla
-velocidad = 0.3  # Velocidad de movimiento
+velocidad = 0.2  # Velocidad de movimiento
 velocidad_diagonal = velocidad / 1.414  # Ajuste para movimiento diagonal
 
 # Tamaño de la pantalla y del personaje
@@ -92,15 +92,18 @@ ancho_personaje, alto_personaje = quietoarriba.get_size()
 # Variable para registrar la última dirección
 ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 
-#Esta lista la hacemos para tener almacenados los proyectiles que tenemos activos
+# Lista para almacenar los proyectiles activos
 proyectiles = []
-velocidad_bala = 5
+velocidad_bala = 0.4
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == KEYDOWN and event.key == K_SPACE:
+            # Disparar proyectil en la dirección actual
+            proyectiles.append({"x": pos_x + ancho_personaje // 2, "y": pos_y + alto_personaje // 2, "direccion": ultima_direccion})
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
@@ -127,16 +130,6 @@ while True:  # Bucle para mantener la pantalla abierta
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_arriba_derecha[indice_anim]
 
-    elif teclas[K_s] and teclas[K_a]:  # Abajo a la izquierda
-        pos_y += velocidad_diagonal
-        pos_x -= velocidad_diagonal
-        ultima_direccion = "abajoizquierda"
-        movido = True
-        if pygame.time.get_ticks() - tiempo_animacion > 100:
-            indice_anim = (indice_anim + 1) % len(imagenes_abajo_izquierda)
-            tiempo_animacion = pygame.time.get_ticks()
-        imagen_actual = imagenes_abajo_izquierda[indice_anim]
-
     elif teclas[K_s] and teclas[K_d]:  # Abajo a la derecha
         pos_y += velocidad_diagonal
         pos_x += velocidad_diagonal
@@ -147,7 +140,17 @@ while True:  # Bucle para mantener la pantalla abierta
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_abajo_derecha[indice_anim]
 
-    # Movimiento en direcciones simples
+    elif teclas[K_s] and teclas[K_a]:  # Abajo a la izquierda
+        pos_y += velocidad_diagonal
+        pos_x -= velocidad_diagonal
+        ultima_direccion = "abajoizquierda"
+        movido = True
+        if pygame.time.get_ticks() - tiempo_animacion > 100:
+            indice_anim = (indice_anim + 1) % len(imagenes_abajo_izquierda)
+            tiempo_animacion = pygame.time.get_ticks()
+        imagen_actual = imagenes_abajo_izquierda[indice_anim]
+
+    # Movimiento en una dirección y animación
     elif teclas[K_w]:  # Arriba
         pos_y -= velocidad
         ultima_direccion = "arriba"
@@ -184,7 +187,7 @@ while True:  # Bucle para mantener la pantalla abierta
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_derecha[indice_anim]
 
-    # Si no se ha movido, se muestra la imagen de quieto según la última dirección
+    # Si no se mueve, mostrar imagen de personaje quieto
     if not movido:
         if ultima_direccion == "arriba":
             imagen_actual = quietoarriba
@@ -194,12 +197,57 @@ while True:  # Bucle para mantener la pantalla abierta
             imagen_actual = quietoizquierda
         elif ultima_direccion == "derecha":
             imagen_actual = quietoderecha
+        elif ultima_direccion == "arribaizquierda":
+            imagen_actual = arribaizquierdaquieto
+        elif ultima_direccion == "arribaderecha":
+            imagen_actual = arribaderechaquieto
+        elif ultima_direccion == "abajoizquierda":
+            imagen_actual = abajoizquierdaquieto
+        elif ultima_direccion == "abajoderecha":
+            imagen_actual = abajoderechaquieto
 
-    # Limitar la posición dentro de los bordes de la pantalla
-    pos_x = max(0, min(pos_x, ancho_pantalla - ancho_personaje))
-    pos_y = max(0, min(pos_y, alto_pantalla - alto_personaje))
+    # Limitar el movimiento a los bordes de la pantalla
+    if pos_x < 0:
+        pos_x = 0
+    elif pos_x > ancho_pantalla - ancho_personaje:
+        pos_x = ancho_pantalla - ancho_personaje
 
-    # Dibujar el fondo y el personaje
+    if pos_y < 0:
+        pos_y = 0
+    elif pos_y > alto_pantalla - alto_personaje:
+        pos_y = alto_pantalla - alto_personaje
+
+    # Dibujar fondo y personaje
     pantalla.blit(fondo, (0, 0))
     pantalla.blit(imagen_actual, (pos_x, pos_y))
-    pygame.display.flip()
+
+    # Actualizar y dibujar proyectiles
+    for bala in proyectiles[:]:
+        if bala["direccion"] == "arriba":
+            bala["y"] -= velocidad_bala
+        elif bala["direccion"] == "abajo":
+            bala["y"] += velocidad_bala
+        elif bala["direccion"] == "izquierda":
+            bala["x"] -= velocidad_bala
+        elif bala["direccion"] == "derecha":
+            bala["x"] += velocidad_bala
+        elif bala["direccion"] == "arribaizquierda":
+            bala["x"] -= velocidad_bala / 1.414
+            bala["y"] -= velocidad_bala / 1.414
+        elif bala["direccion"] == "arribaderecha":
+            bala["x"] += velocidad_bala / 1.414
+            bala["y"] -= velocidad_bala / 1.414
+        elif bala["direccion"] == "abajoizquierda":
+            bala["x"] -= velocidad_bala / 1.414
+            bala["y"] += velocidad_bala / 1.414
+        elif bala["direccion"] == "abajoderecha":
+            bala["x"] += velocidad_bala / 1.414
+            bala["y"] += velocidad_bala / 1.414
+
+        # Eliminar proyectiles fuera de la pantalla
+        if bala["x"] < 0 or bala["x"] > ancho_pantalla or bala["y"] < 0 or bala["y"] > alto_pantalla:
+            proyectiles.remove(bala)
+        else:
+            pantalla.blit(bullet, (bala["x"], bala["y"]))
+
+    pygame.display.update()  # Actualizar la pantalla
