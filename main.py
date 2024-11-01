@@ -82,7 +82,7 @@ tiempo_animacion = pygame.time.get_ticks()  # Temporizador para controlar la ani
 
 # Posición y velocidad del personaje
 pos_x, pos_y = 375, 375  # Centro de la pantalla
-velocidad = 0.2  # Velocidad de movimiento
+velocidad = 5  # Velocidad de movimiento
 velocidad_diagonal = velocidad / 1.414  # Ajuste para movimiento diagonal
 
 # Tamaño de la pantalla y del personaje
@@ -94,7 +94,7 @@ ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 
 # Lista para almacenar los proyectiles activos
 proyectiles = []
-velocidad_bala = 0.4
+velocidad_bala = 10
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -244,10 +244,12 @@ while True:  # Bucle para mantener la pantalla abierta
             bala["x"] += velocidad_bala / 1.414
             bala["y"] += velocidad_bala / 1.414
 
-        # Eliminar proyectiles fuera de la pantalla
+        # Esto nos borra la bala cuando sale de los bordes que si no consume mucho
         if bala["x"] < 0 or bala["x"] > ancho_pantalla or bala["y"] < 0 or bala["y"] > alto_pantalla:
             proyectiles.remove(bala)
         else:
             pantalla.blit(bullet, (bala["x"], bala["y"]))
 
     pygame.display.update()  # Actualizar la pantalla
+    pygame.display.flip()
+    pygame.time.Clock().tick(60)
