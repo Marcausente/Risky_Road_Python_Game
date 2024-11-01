@@ -100,8 +100,10 @@ velocidad_bala = 10
 tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
-# Esto nos carga la musica de fondo
+# Esto nos carga la musica de fondo y los sonidos
 pygame.mixer.music.load("Sounds/GameMusic.mp3")
+shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
+shot_sound.set_volume(0.2)
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
 
 # Esto es para hacer los controles de volumen, para que suba o baje según queramos
@@ -126,6 +128,7 @@ while True:  # Bucle para mantener la pantalla abierta
         elif event.type == KEYDOWN and event.key == K_SPACE:
             # Disparar proyectil en la dirección actual
             proyectiles.append({"x": pos_x + ancho_personaje // 2, "y": pos_y + alto_personaje // 2, "direccion": ultima_direccion})
+            shot_sound.play()
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
