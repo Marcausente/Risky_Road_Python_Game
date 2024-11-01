@@ -11,6 +11,9 @@ pygame.display.set_icon(logo)
 # Carga el fondo y el personaje
 fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
+#Carga de la bala
+bullet = pygame.image.load("img/bullet.png")
+bullet = pygame.transform.scale(bullet,(20,20))
 
 # Carga de imágenes del personaje
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
@@ -88,6 +91,10 @@ ancho_personaje, alto_personaje = quietoarriba.get_size()
 
 # Variable para registrar la última dirección
 ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
+
+#Esta lista la hacemos para tener almacenados los proyectiles que tenemos activos
+proyectiles = []
+velocidad_bala = 5
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
