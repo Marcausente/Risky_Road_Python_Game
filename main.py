@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame, sys
@@ -142,6 +143,15 @@ def generar_enemigo():
 
     # Añadimos el enemigo a la lista de enemigos con sus coordenadas y velocidad
     enemigos.append({"x": x, "y": y, "velocidad": 3})
+
+def mover_enemigos():
+    for enemigo in enemigos:
+        dx = pos_x - enemigo["x"]
+        dy = pos_y - enemigo["y"]
+        distancia = math.hypot(dx, dy)  # Calcula la distancia para normalizar el movimiento
+        if distancia > 0:  # Evita la división por cero
+            enemigo["x"] += enemigo["velocidad"] * (dx / distancia)
+            enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
