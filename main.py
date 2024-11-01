@@ -1,7 +1,12 @@
+import random
+
 import pygame, sys
 from pygame.locals import *
 
 pygame.init()
+
+enemigos = []
+tiempo_spawn_enemigos = pygame.time.get_ticks()
 
 pantalla = pygame.display.set_mode((750, 750))  # Ventana de 750x750
 pygame.display.set_caption("Risky Road")
@@ -119,6 +124,24 @@ sound_on = pygame.transform.scale(sound_on, (60, 60))
 # Variable para el icono de sonido actual
 current_sound_icon = None
 
+def generar_enemigo():
+    # Escoge un borde aleatorio: 0=arriba, 1=abajo, 2=izquierda, 3=derecha
+    borde = random.randint(0, 3)
+    if borde == 0:  # Borde superior
+        x = random.randint(0, ancho_pantalla)
+        y = 0
+    elif borde == 1:  # Borde inferior
+        x = random.randint(0, ancho_pantalla)
+        y = alto_pantalla
+    elif borde == 2:  # Borde izquierdo
+        x = 0
+        y = random.randint(0, alto_pantalla)
+    else:  # Borde derecho
+        x = ancho_pantalla
+        y = random.randint(0, alto_pantalla)
+
+    # Añadimos el enemigo a la lista de enemigos con sus coordenadas y velocidad
+    enemigos.append({"x": x, "y": y, "velocidad": 3})
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
