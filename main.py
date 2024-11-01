@@ -96,6 +96,13 @@ ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
 proyectiles = []
 velocidad_bala = 10
 
+#Esto nos carga la musica de fondo
+pygame.mixer.music.load("Sounds/GameMusic.mp3")
+pygame.mixer.music.play(-1) #-1 hace que la musicia se reproduzca de forma infinita
+
+#Esto es para hacer los controles de volumen, para que suba o baje segun queramos
+sound_up = pygame.image.load()
+
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
         if event.type == QUIT:
