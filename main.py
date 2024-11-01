@@ -15,6 +15,8 @@ pantalla.blit(fondo, (0, 0))
 bullet = pygame.image.load("img/bullet.png")
 bullet = pygame.transform.scale(bullet,(20,20))
 
+saved = 1.0 #Variable para guardar el sonido actual, la usamos luego en controles
+
 # Carga de imágenes del personaje
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
 caminaarriba1 = pygame.image.load("img/MainCharacter/MainUpWalking1.png")
@@ -105,6 +107,11 @@ sound_up = pygame.image.load("img/Sound_UP.png")
 sound_down = pygame.image.load("img/Sound_DOWN.png")
 sound_on = pygame.image.load("img/Sound_ON.png")
 sound_off = pygame.image.load("img/Sound_OFF.png")
+sound_up = pygame.transform.scale(sound_up, (60,60))
+sound_down = pygame.transform.scale(sound_down, (60,60))
+sound_off = pygame.transform.scale(sound_off, (60,60))
+sound_on = pygame.transform.scale(sound_on, (60,60))
+
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -196,6 +203,22 @@ while True:  # Bucle para mantener la pantalla abierta
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_derecha)
             tiempo_animacion = pygame.time.get_ticks()
         imagen_actual = imagenes_caminar_derecha[indice_anim]
+
+    if teclas[K_DOWN] and pygame.mixer_music.get_volume() > 0.0: #Si se presiona flecha abajo y la musica no esta mute
+        pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() - 0.01)
+        pantalla.blit(sound_down, (10 , 10))
+        if pygame.mixer_music.get_volume() > 0.0:
+            saved = pygame.mixer.music.get_volume()
+    if teclas [K_UP] and pygame.mixer_music.get_volume() < 1.0:
+        pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.01)
+        pantalla.blit(sound_up, (10,10))
+        saved = pygame.mixer.music.get_volume()
+    if teclas [K_RIGHT]:
+        pygame.mixer_music.set_volume(saved)
+        pantalla.blit(sound_on, (10,10))
+    if teclas [K_LEFT]:
+        pygame.mixer_music.set_volume(0.0)
+        pantalla.blit(sound_off, (10,10))
 
     # Si no se mueve, mostrar imagen de personaje quieto
     if not movido:
