@@ -107,7 +107,8 @@ tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
 
-def detectar_colision_bala():
+
+def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
     global proyectiles, enemigos
     nuevos_proyectiles = []
     nuevos_enemigos = []
@@ -116,11 +117,14 @@ def detectar_colision_bala():
         impacto = False
         for enemigo in enemigos:
             distancia = math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"])
-            if distancia < 40:  # Radio de colisión ajustable según el tamaño del enemigo
+            if distancia < 40: #Esto es el tamaño del enemigo que generara el impacto, cuanto mas lo suba mayor sera el rango de impacto
                 impacto = True
                 break
         if not impacto:
-            nuevos_proyectiles.append(proyectil)
+            nuevos_proyectiles.append(proyectil)  # Mantiene las balas que no han chocado con los sprites de los enemigos
+        else:
+            # Solo mantiene enemigos que no han hecho contacto con las balas
+            enemigos.remove(enemigo)
 
     for enemigo in enemigos:
         if not any(math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"]) < 20 for proyectil in
@@ -150,7 +154,8 @@ sound_on = pygame.transform.scale(sound_on, (60, 60))
 current_sound_icon = None
 
 def generar_enemigo():
-    # Escoge un borde aleatorio: 0=arriba, 1=abajo, 2=izquierda, 3=derecha
+
+    # Esto genera un enemigo random en estas posiciones: 0=arriba, 1=abajo, 2=izquierda, 3=derecha
     borde = random.randint(0, 3)
     if borde == 0:  # Borde superior
         x = random.randint(0, ancho_pantalla)
@@ -198,7 +203,7 @@ while True:  # Bucle para mantener la pantalla abierta
     pantalla.blit(fondo, (0, 0))
 
     # Lógica para generar enemigos cada cierto tiempo
-    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 1500:  # Cada 2 segundos
+    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 1000:  # Cada 1 segundos
         generar_enemigo()
         tiempo_spawn_enemigos = pygame.time.get_ticks()
 
