@@ -106,6 +106,30 @@ velocidad_bala = 10
 tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
+
+def detectar_colision_bala():
+    global proyectiles, enemigos
+    nuevos_proyectiles = []
+    nuevos_enemigos = []
+
+    for proyectil in proyectiles:
+        impacto = False
+        for enemigo in enemigos:
+            distancia = math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"])
+            if distancia < 40:  # Radio de colisión ajustable según el tamaño del enemigo
+                impacto = True
+                break
+        if not impacto:
+            nuevos_proyectiles.append(proyectil)
+
+    for enemigo in enemigos:
+        if not any(math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"]) < 20 for proyectil in
+                   proyectiles):
+            nuevos_enemigos.append(enemigo)
+
+    proyectiles = nuevos_proyectiles
+    enemigos = nuevos_enemigos
+
 # Esto nos carga la musica de fondo y los sonidos
 pygame.mixer.music.load("Sounds/GameMusic.mp3")
 shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
@@ -174,7 +198,7 @@ while True:  # Bucle para mantener la pantalla abierta
     pantalla.blit(fondo, (0, 0))
 
     # Lógica para generar enemigos cada cierto tiempo
-    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 2000:  # Cada 2 segundos
+    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 1500:  # Cada 2 segundos
         generar_enemigo()
         tiempo_spawn_enemigos = pygame.time.get_ticks()
 
@@ -184,9 +208,11 @@ while True:  # Bucle para mantener la pantalla abierta
         pygame.quit()
         sys.exit() # Fin del juego al detectar colisión
 
+    detectar_colision_bala()
+
     pantalla.blit(fondo, (0, 0))
     for enemigo in enemigos:
-        pygame.draw.rect(pantalla, (255, 0, 0), (enemigo["x"], enemigo["y"], 20, 20))
+        pygame.draw.rect(pantalla, (255, 0, 0), (enemigo["x"], enemigo["y"], 40, 40))
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
