@@ -21,8 +21,11 @@ pantalla.blit(fondo, (0, 0))
 bullet = pygame.image.load("img/bullet.png")
 bullet = pygame.transform.scale(bullet, (20, 20))
 
+
+
 saved = 1.0  # Variable para guardar el sonido actual, la usamos luego en controles
-puntuacion = 0
+
+puntuacion = 0 #Guarda los puntos de la partida
 
 # Carga de imágenes del personaje
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
@@ -52,6 +55,9 @@ abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.p
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
+
+#COLORES (Esto para los puntos)
+ROJO = (189, 23, 20, 1)
 
 # Redimensionamos las imágenes del personaje
 quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
@@ -113,7 +119,7 @@ icono_visible = False
 
 
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
-    global proyectiles, enemigos
+    global proyectiles, enemigos, puntuacion
     nuevos_proyectiles = []
     nuevos_enemigos = []
 
@@ -123,6 +129,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
             distancia = math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"])
             if distancia < 40: #Esto es el tamaño del enemigo que generara el impacto, cuanto mas lo suba mayor sera el rango de impacto
                 impacto = True
+                puntuacion += 10
                 break
         if not impacto:
             nuevos_proyectiles.append(proyectil)  # Mantiene las balas que no han chocado con los sprites de los enemigos
@@ -197,7 +204,7 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     tipo_letra = pygame.font.Font(consolas,dimensiones)
     superficie = tipo_letra.render(texto,True, color)
     rectangulo = superficie.get_rect()
-    rectangulo.center(x, y)
+    rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
 
 while True:  # Bucle para mantener la pantalla abierta
@@ -375,7 +382,7 @@ while True:  # Bucle para mantener la pantalla abierta
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
 
-    muestra_texto(pantalla, consolas, str(puntuacion), )
+    muestra_texto(pantalla, consolas, str(puntuacion), ROJO, 40, 700, 50)
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
