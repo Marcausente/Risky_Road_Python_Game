@@ -389,7 +389,7 @@ while True:  # Bucle para mantener la pantalla abierta
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
 
-    muestra_texto(pantalla, consolas, str(puntuacion), ROJO, 40, 700, 50)
+    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 650, 50) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
