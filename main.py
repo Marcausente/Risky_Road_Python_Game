@@ -135,7 +135,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
     enemigos = nuevos_enemigos
 
 # Esto nos carga la musica de fondo y los sonidos
-pygame.mixer.music.load("Sounds/GameMusic.mp3")
+pygame.mixer.music.load("Sounds/BSO2.mp3")
 shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
 shot_sound.set_volume(0.2)
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
