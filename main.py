@@ -8,6 +8,9 @@ pygame.init()
 
 enemigos = []
 tiempo_spawn_enemigos = pygame.time.get_ticks()
+tiempo_espera_inicial = 1200  # Tiempo inicial de spawn de enemigos
+tiempo_espera = tiempo_espera_inicial
+tiempo_spawn_enemigos = pygame.time.get_ticks()
 
 pantalla = pygame.display.set_mode((750, 750))  # Ventana de 750x750
 pygame.display.set_caption("Risky Road")
@@ -202,7 +205,7 @@ def detectar_colision():
 
 def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     tipo_letra = pygame.font.Font(consolas,dimensiones)
-    superficie = tipo_letra.render(texto,True, color)
+    superficie = tipo_letra.render(texto,False, color)
     rectangulo = superficie.get_rect()
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
@@ -220,10 +223,14 @@ while True:  # Bucle para mantener la pantalla abierta
     # Dibujar fondo y personaje
     pantalla.blit(fondo, (0, 0))
 
-    # Lógica para generar enemigos cada cierto tiempo
-    if pygame.time.get_ticks() - tiempo_spawn_enemigos > 1000:  # Cada 1 segundos
+    # Genera enemigos cada cierto tiempo
+    if pygame.time.get_ticks() - tiempo_spawn_enemigos > tiempo_espera:
         generar_enemigo()
         tiempo_spawn_enemigos = pygame.time.get_ticks()
+
+        # Cada vez que se consigan 100 puntos se reduce el tiempo de spawn
+        if puntuacion >= 100:  # Revisa si la puntuación es al menos 100
+            tiempo_espera = max(300, tiempo_espera - 100)  # Hace que no puedan aparecer a menos de 0.3 segundos porque seria infumable
 
     # Mover enemigos y verificar colisiones
     mover_enemigos()
