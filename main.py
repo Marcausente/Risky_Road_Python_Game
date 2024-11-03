@@ -230,7 +230,7 @@ while True:  # Bucle para mantener la pantalla abierta
 
         # Cada vez que se consigan 100 puntos se reduce el tiempo de spawn
         if puntuacion >= 100:  # Revisa si la puntuación es al menos 100
-            tiempo_espera = max(300, tiempo_espera - 100)  # Hace que no puedan aparecer a menos de 0.3 segundos porque seria infumable
+            tiempo_espera = max(300, tiempo_espera - 10)  # Hace que no puedan aparecer a menos de 0.3 segundos porque seria infumable
 
     # Mover enemigos y verificar colisiones
     mover_enemigos()
