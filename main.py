@@ -22,6 +22,7 @@ bullet = pygame.image.load("img/bullet.png")
 bullet = pygame.transform.scale(bullet, (20, 20))
 
 saved = 1.0  # Variable para guardar el sonido actual, la usamos luego en controles
+puntuacion = 0
 
 # Carga de imágenes del personaje
 quietoarriba = pygame.image.load("img/MainCharacter/MainUpStanding.png")
@@ -48,6 +49,9 @@ abajoderecha2 = pygame.image.load("img/MainCharacter/Diagonal/MainSDWalking2.png
 abajoizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainSAstanding.png")
 abajoizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingSA1.png")
 abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.png")
+
+#FUENTE DE LETRAS
+consolas = pygame.font.match_font("consolas")
 
 # Redimensionamos las imágenes del personaje
 quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
@@ -188,6 +192,13 @@ def detectar_colision():
         if distancia < ancho_personaje / 2:
             return True  # Colisión detectada
     return False
+
+def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
+    tipo_letra = pygame.font.Font(consolas,dimensiones)
+    superficie = tipo_letra.render(texto,True, color)
+    rectangulo = superficie.get_rect()
+    rectangulo.center(x, y)
+    pantalla.blit(superficie, rectangulo)
 
 while True:  # Bucle para mantener la pantalla abierta
     for event in pygame.event.get():
@@ -363,6 +374,8 @@ while True:  # Bucle para mantener la pantalla abierta
     # Esto nos printea en pantalla el sonido
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
+
+    muestra_texto(pantalla, consolas, str(puntuacion), )
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
