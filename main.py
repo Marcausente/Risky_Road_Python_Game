@@ -56,8 +56,9 @@ abajoizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainSAstand
 abajoizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingSA1.png")
 abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.png")
 orcquietoabajo = pygame.image.load("img/orc/orc.png")
+orcquietoarriba = pygame.image.load("img/orc/orcquietoarriba.png")
 orcquietoderecha = pygame.image.load("img/orc/orcquietoderecha.png")
-orcquietoizquierda = pygame.image.load("img/")
+orcquietoizquierda = pygame.image.load("img/orc/orcquietoizquierda.png")
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
@@ -91,6 +92,9 @@ arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60, 60))
 arribaderecha2 = pygame.transform.scale(arribaderecha2, (60, 60))
 arribaderecha1 = pygame.transform.scale(arribaderecha1, (60, 60))
 orcquietoabajo = pygame.transform.scale(orcquietoabajo, (60, 60))
+orcquietoderecha = pygame.transform.scale(orcquietoderecha, (60, 60))
+orcquietoarriba = pygame.transform.scale(orcquietoarriba, (60, 60))
+orcquietoizquierda = pygame.transform.scale(orcquietoizquierda, (60, 60))
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
@@ -115,6 +119,7 @@ ancho_personaje, alto_personaje = quietoarriba.get_size()
 
 # Variable para registrar la última dirección
 ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
+ultima_direccion_orco = "abajo"  # Almacena la direccion del enemigo
 
 # Lista para almacenar los proyectiles activos
 proyectiles = []
@@ -200,6 +205,18 @@ def mover_enemigos():
             enemigo["x"] += enemigo["velocidad"] * (dx / distancia)
             enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
+        # Actualiza la dirección del orco según el movimiento
+        if abs(dx) > abs(dy):
+            if dx > 0:
+                enemigo["direccion"] = "derecha"
+            else:
+                enemigo["direccion"] = "izquierda"
+        else:
+            if dy > 0:
+                enemigo["direccion"] = "abajo"
+            else:
+                enemigo["direccion"] = "arriba"
+
 def detectar_colision():
     for enemigo in enemigos:
         distancia = math.hypot(enemigo["x"] - pos_x, enemigo["y"] - pos_y)
@@ -245,8 +262,16 @@ while True:  # Bucle para mantener la pantalla abierta
     detectar_colision_bala()
 
     pantalla.blit(fondo, (0, 0))
+    #Printea al orco depende de la direccion
     for enemigo in enemigos:
-        pantalla.blit(orcquietoabajo, (enemigo["x"], enemigo["y"]))
+        if enemigo["direccion"] == "arriba":
+            pantalla.blit(orcquietoarriba, (enemigo["x"], enemigo["y"]))
+        elif enemigo["direccion"] == "abajo":
+            pantalla.blit(orcquietoabajo, (enemigo["x"], enemigo["y"]))
+        elif enemigo["direccion"] == "derecha":
+            pantalla.blit(orcquietoderecha, (enemigo["x"], enemigo["y"]))
+        elif enemigo["direccion"] == "izquierda":
+            pantalla.blit(orcquietoizquierda, (enemigo["x"], enemigo["y"]))
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
     movido = False  # Bandera para verificar si el personaje se ha movido
