@@ -59,10 +59,6 @@ orcquietoabajo = pygame.image.load("img/orc/orc.png")
 orcquietoarriba = pygame.image.load("img/orc/orcquietoarriba.png")
 orcquietoderecha = pygame.image.load("img/orc/orcquietoderecha.png")
 orcquietoizquierda = pygame.image.load("img/orc/orcquietoizquierda.png")
-orcarribaderechaquieto = pygame.image.load("img/orc/orcoarribaderechaquieto.png")
-orcarribaizquierdaquieto = pygame.image.load("img/orc/orcoarribaizquierdaquieto.png")
-orcabajoderechaquieto = pygame.image.load("img/orc/orcoabajoderechaquieto.png")
-orcabajoizquierdaquieto = pygame.image.load("img/orc/orcoabajoizquierdaquieto.png")
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
@@ -99,10 +95,6 @@ orcquietoabajo = pygame.transform.scale(orcquietoabajo, (60, 60))
 orcquietoderecha = pygame.transform.scale(orcquietoderecha, (60, 60))
 orcquietoarriba = pygame.transform.scale(orcquietoarriba, (60, 60))
 orcquietoizquierda = pygame.transform.scale(orcquietoizquierda, (60, 60))
-orcarribaderachaquieto = pygame.transform.scale(orcarribaderechaquieto, (60, 60))
-orcarribaizquierdaquieto = pygame.transform.scale(orcarribaizquierdaquieto, (60, 60))
-orcabajoderechaquieto = pygame.transform.scale(orcabajoderechaquieto, (60, 60))
-orcabajoizquierdaquieto = pygame.transform.scale(orcabajoizquierdaquieto, (60, 60))
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
@@ -284,14 +276,6 @@ while True:  # Bucle para mantener la pantalla abierta
             pantalla.blit(orcquietoderecha, (enemigo["x"], enemigo["y"]))
         elif enemigo["direccion"] == "izquierda":
             pantalla.blit(orcquietoizquierda, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "arribaizquierda":
-            pantalla.blit(orcarribaizquierdaquieto, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "arribaderecha":
-            pantalla.blit(orcarribaderechaquieto, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "abajoizquierda":
-            pantalla.blit(orcabajoizquierdaquieto, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "abajoderecha":
-            pantalla.blit(orcabajoderechaquieto, (enemigo["x"], enemigo["y"]))
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
     movido = False  # Bandera para verificar si el personaje se ha movido
