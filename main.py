@@ -55,6 +55,7 @@ abajoderecha2 = pygame.image.load("img/MainCharacter/Diagonal/MainSDWalking2.png
 abajoizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainSAstanding.png")
 abajoizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingSA1.png")
 abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.png")
+orcquietoabajo = pygame.image.load("img/orc.png")
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
