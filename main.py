@@ -55,10 +55,6 @@ abajoderecha2 = pygame.image.load("img/MainCharacter/Diagonal/MainSDWalking2.png
 abajoizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainSAstanding.png")
 abajoizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingSA1.png")
 abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.png")
-orcquietoabajo = pygame.image.load("img/orc/orc.png")
-orcquietoarriba = pygame.image.load("img/orc/orcquietoarriba.png")
-orcquietoderecha = pygame.image.load("img/orc/orcquietoderecha.png")
-orcquietoizquierda = pygame.image.load("img/orc/orcquietoizquierda.png")
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
@@ -91,10 +87,6 @@ arribaizquierda1 = pygame.transform.scale(arribaizquierda1, (60, 60))
 arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60, 60))
 arribaderecha2 = pygame.transform.scale(arribaderecha2, (60, 60))
 arribaderecha1 = pygame.transform.scale(arribaderecha1, (60, 60))
-orcquietoabajo = pygame.transform.scale(orcquietoabajo, (60, 60))
-orcquietoderecha = pygame.transform.scale(orcquietoderecha, (60, 60))
-orcquietoarriba = pygame.transform.scale(orcquietoarriba, (60, 60))
-orcquietoizquierda = pygame.transform.scale(orcquietoizquierda, (60, 60))
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
@@ -119,7 +111,6 @@ ancho_personaje, alto_personaje = quietoarriba.get_size()
 
 # Variable para registrar la última dirección
 ultima_direccion = "abajo"  # Se inicializa con la dirección hacia abajo
-ultima_direccion_orco = "abajo"  # Almacena la direccion del enemigo
 
 # Lista para almacenar los proyectiles activos
 proyectiles = []
@@ -160,7 +151,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
 # Esto nos carga la musica de fondo y los sonidos
 pygame.mixer.music.load("Sounds/BSO2.mp3")
 shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
-shot_sound.set_volume(0.5)
+shot_sound.set_volume(0.2)
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
 
 # Esto es para hacer los controles de volumen, para que suba o baje según queramos
@@ -200,26 +191,10 @@ def mover_enemigos():
     for enemigo in enemigos:
         dx = pos_x - enemigo["x"]
         dy = pos_y - enemigo["y"]
-        distancia = math.hypot(dx, dy)
-
+        distancia = math.hypot(dx, dy)  # Calcula la distancia para normalizar el movimiento
         if distancia > 0:  # Evita la división por cero
-            if abs(dx) > abs(dy):  #  izquierda derecha
-                enemigo["x"] += enemigo["velocidad"] * (dx / abs(dx))
-                enemigo["y"] += 0  # No se mueve en el eje y
-            elif abs(dy) > abs(dx):  # arriba abajo
-                enemigo["y"] += enemigo["velocidad"] * (dy / abs(dy))
-                enemigo["x"] += 0  # No se mueve en el eje x
-
-        if abs(dx) > abs(dy):
-            if dx > 0:
-                enemigo["direccion"] = "derecha"
-            else:
-                enemigo["direccion"] = "izquierda"
-        else:
-            if dy > 0:
-                enemigo["direccion"] = "abajo"
-            else:
-                enemigo["direccion"] = "arriba"
+            enemigo["x"] += enemigo["velocidad"] * (dx / distancia)
+            enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
 def detectar_colision():
     for enemigo in enemigos:
@@ -266,16 +241,9 @@ while True:  # Bucle para mantener la pantalla abierta
     detectar_colision_bala()
 
     pantalla.blit(fondo, (0, 0))
-    #Printea al orco depende de la direccion
     for enemigo in enemigos:
-        if enemigo["direccion"] == "arriba":
-            pantalla.blit(orcquietoarriba, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "abajo":
-            pantalla.blit(orcquietoabajo, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "derecha":
-            pantalla.blit(orcquietoderecha, (enemigo["x"], enemigo["y"]))
-        elif enemigo["direccion"] == "izquierda":
-            pantalla.blit(orcquietoizquierda, (enemigo["x"], enemigo["y"]))
+        pygame.draw.rect(pantalla, (255, 0, 0), (enemigo["x"], enemigo["y"], 40, 40))
+
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
     movido = False  # Bandera para verificar si el personaje se ha movido
