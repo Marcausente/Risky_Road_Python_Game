@@ -200,12 +200,16 @@ def mover_enemigos():
     for enemigo in enemigos:
         dx = pos_x - enemigo["x"]
         dy = pos_y - enemigo["y"]
-        distancia = math.hypot(dx, dy)  # Calcula la distancia para normalizar el movimiento
-        if distancia > 0:  # Evita la división por cero
-            enemigo["x"] += enemigo["velocidad"] * (dx / distancia)
-            enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
+        distancia = math.hypot(dx, dy)
 
-        # Actualiza la dirección del orco según el movimiento
+        if distancia > 0:  # Evita la división por cero
+            if abs(dx) > abs(dy):  #  izquierda derecha
+                enemigo["x"] += enemigo["velocidad"] * (dx / abs(dx))
+                enemigo["y"] += 0  # No se mueve en el eje y
+            elif abs(dy) > abs(dx):  # arriba abajo
+                enemigo["y"] += enemigo["velocidad"] * (dy / abs(dy))
+                enemigo["x"] += 0  # No se mueve en el eje x
+
         if abs(dx) > abs(dy):
             if dx > 0:
                 enemigo["direccion"] = "derecha"
