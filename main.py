@@ -19,6 +19,7 @@ pygame.display.set_icon(logo)
 
 # Carga el fondo y el personaje
 fondo = pygame.image.load("img/GameBackground.jpg")
+
 pantalla.blit(fondo, (0, 0))
 # Carga de la bala
 bullet = pygame.image.load("img/bullet.png")
@@ -64,6 +65,7 @@ consolas = pygame.font.match_font("consolas")
 ROJO = (189, 23, 20, 1)
 
 # Redimensionamos las imágenes del personaje
+fondo = pygame.transform.scale(fondo, (750, 750))
 quietoarriba = pygame.transform.scale(quietoarriba, (60, 60))
 caminaarriba1 = pygame.transform.scale(caminaarriba1, (60, 60))
 caminaarriba2 = pygame.transform.scale(caminaarriba2, (60, 60))
