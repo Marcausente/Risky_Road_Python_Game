@@ -55,6 +55,7 @@ abajoderecha2 = pygame.image.load("img/MainCharacter/Diagonal/MainSDWalking2.png
 abajoizquierdaquieto = pygame.image.load("img/MainCharacter/Diagonal/MainSAstanding.png")
 abajoizquierda1 = pygame.image.load("img/MainCharacter/Diagonal/MainWalkingSA1.png")
 abajoizquierda2 = pygame.image.load("img/MainCharacter/Diagonal/MainASWalking2.png")
+diana = pygame.image.load("img/diana.png")
 
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
@@ -87,6 +88,7 @@ arribaizquierda1 = pygame.transform.scale(arribaizquierda1, (60, 60))
 arribaizquierda2 = pygame.transform.scale(arribaizquierda2, (60, 60))
 arribaderecha2 = pygame.transform.scale(arribaderecha2, (60, 60))
 arribaderecha1 = pygame.transform.scale(arribaderecha1, (60, 60))
+diana = pygame.transform.scale(diana, (60, 60))
 
 # Lista de imágenes para la animación
 imagenes_caminar_arriba = [quietoarriba, caminaarriba1, quietoarriba, caminaarriba2]
@@ -242,7 +244,7 @@ while True:  # Bucle para mantener la pantalla abierta
 
     pantalla.blit(fondo, (0, 0))
     for enemigo in enemigos:
-        pygame.draw.rect(pantalla, (255, 0, 0), (enemigo["x"], enemigo["y"], 40, 40))
+        pantalla.blit(diana, (enemigo["x"], enemigo["y"]))
 
     # Teclas presionadas
     teclas = pygame.key.get_pressed()
