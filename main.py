@@ -155,7 +155,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
 # Esto nos carga la musica de fondo y los sonidos
 pygame.mixer.music.load("Sounds/BSO2.mp3")
 shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
-shot_sound.set_volume(0.2)
+shot_sound.set_volume(0.5)
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
 
 # Esto es para hacer los controles de volumen, para que suba o baje según queramos
@@ -393,7 +393,7 @@ while True:  # Bucle para mantener la pantalla abierta
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
 
-    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 650, 50) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
+    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 635, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
