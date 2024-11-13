@@ -209,9 +209,10 @@ sound_on = pygame.transform.scale(sound_on, (60, 60))
 current_sound_icon = None
 
 def mostrar_vidas():
-    fuente = pygame.font.SysFont('Consolas', 30)
-    texto_vidas = fuente.render(f'Vidas: {vidas}', True, (255, 0, 0))
-    pantalla.blit(texto_vidas, (10, 10))  # Posición en la esquina superior izquierda
+    for i in range(vidas):
+        vida_icono = pygame.image.load("img/LifeIcon.png")  # Cambia por la imagen de corazón o vida que tengas
+        vida_icono = pygame.transform.scale(vida_icono, (30, 30))  # Ajusta el tamaño
+        pantalla.blit(vida_icono, (10 + i * 40, 10))  # Coloca cada vida a la izquierda
 
 def generar_enemigo():
 
@@ -243,15 +244,9 @@ def mover_enemigos():
             enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
 def detectar_colision():
-    global vidas
     for enemigo in enemigos:
         distancia = math.hypot(enemigo["x"] - pos_x, enemigo["y"] - pos_y)
         if distancia < ancho_personaje / 2:
-            vidas -= 1
-            if vidas > 0:
-                reiniciar_juego()
-            else:
-                pantalla_muerte()
             return True
     return False
 
@@ -261,191 +256,3 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     rectangulo = superficie.get_rect()
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
-
-
-
-
-#BUCLE JUGABLE DEL PROGRAMA A PARTIR DE AQUI:
-
-
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == KEYDOWN and event.key == K_SPACE:
-            proyectiles.append({"x": pos_x + ancho_personaje // 2, "y": pos_y + alto_personaje // 2, "direccion": ultima_direccion})
-            shot_sound.play()
-
-    pantalla.blit(fondo, (0, 0))
-    mostrar_vidas()
-
-    # Genera enemigos cada cierto tiempo
-    if pygame.time.get_ticks() - tiempo_spawn_enemigos > tiempo_espera:
-        generar_enemigo()
-        tiempo_spawn_enemigos = pygame.time.get_ticks()
-
-        # Cada vez que se consigan 100 puntos se reduce el tiempo de spawn
-        if puntuacion >= 100:  # Revisa si la puntuación es al menos 100
-            tiempo_espera = max(300, tiempo_espera - 10)  # Hace que no puedan aparecer a menos de 0.3 segundos porque seria infumable
-
-    # Mover enemigos y verificar colisiones
-    mover_enemigos()
-    if detectar_colision():
-        pantalla_muerte()
-
-    detectar_colision_bala()
-
-    for enemigo in enemigos:
-        pantalla.blit(diana, (enemigo["x"], enemigo["y"]))
-
-    # Teclas presionadas
-    teclas = pygame.key.get_pressed()
-    movido = False  # Bandera para verificar si el personaje se ha movido
-
-    # Movimiento diagonal y animación
-    if teclas[K_w] and teclas[K_a]:  # Arriba a la izquierda
-        pos_y -= velocidad_diagonal
-        pos_x -= velocidad_diagonal
-        ultima_direccion = "arribaizquierda"
-        movido = True
-    elif teclas[K_w] and teclas[K_d]:  # Arriba a la derecha
-        pos_y -= velocidad_diagonal
-        pos_x += velocidad_diagonal
-        ultima_direccion = "arribaderecha"
-        movido = True
-    elif teclas[K_s] and teclas[K_a]:  # Abajo a la izquierda
-        pos_y += velocidad_diagonal
-        pos_x -= velocidad_diagonal
-        ultima_direccion = "abajoizquierda"
-        movido = True
-    elif teclas[K_s] and teclas[K_d]:  # Abajo a la derecha
-        pos_y += velocidad_diagonal
-        pos_x += velocidad_diagonal
-        ultima_direccion = "abajoderecha"
-        movido = True
-    elif teclas[K_w]:  # Arriba
-        pos_y -= velocidad
-        ultima_direccion = "arriba"
-        movido = True
-    elif teclas[K_a]:  # Izquierda
-        pos_x -= velocidad
-        ultima_direccion = "izquierda"
-        movido = True
-    elif teclas[K_s]:  # Abajo
-        pos_y += velocidad
-        ultima_direccion = "abajo"
-        movido = True
-    elif teclas[K_d]:  # Derecha
-        pos_x += velocidad
-        ultima_direccion = "derecha"
-        movido = True
-
-    # Control de volumen
-    if teclas[K_DOWN] and pygame.mixer_music.get_volume() > 0.0:  # Si se presiona flecha abajo y la música no está mute
-        pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() - 0.01)
-        current_sound_icon = sound_down
-        if pygame.mixer_music.get_volume() > 0.0:
-            saved = pygame.mixer.music.get_volume()
-        icono_visible = True
-        tiempo_icono_visible = pygame.time.get_ticks()
-    elif teclas[K_UP] and pygame.mixer_music.get_volume() < 1.0:
-        pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.01)
-        current_sound_icon = sound_up
-        saved = pygame.mixer.music.get_volume()
-    elif teclas[K_RIGHT]:
-        pygame.mixer_music.set_volume(saved)
-        current_sound_icon = sound_on
-    elif teclas[K_LEFT]:
-        pygame.mixer_music.set_volume(0.0)
-        current_sound_icon = sound_off
-    else:
-        current_sound_icon = None  # Reset icon if no volume keys are pressed
-
-    # Limitar el movimiento a los bordes de la pantalla
-    if pos_x < 0:
-        pos_x = 0
-    elif pos_x > ancho_pantalla - ancho_personaje:
-        pos_x = ancho_pantalla - ancho_personaje
-    if pos_y < 0:
-        pos_y = 0
-    elif pos_y > alto_pantalla - alto_personaje:
-        pos_y = alto_pantalla - alto_personaje
-
-    if movido:
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - tiempo_animacion > 200:  # Cambia la imagen cada 200 ms
-            indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)  # Cambia la imagen
-            tiempo_animacion = tiempo_actual
-
-        if ultima_direccion == "arriba":
-            imagen_actual = imagenes_caminar_arriba[indice_anim]
-        elif ultima_direccion == "abajo":
-            imagen_actual = imagenes_caminar_abajo[indice_anim]
-        elif ultima_direccion == "derecha":
-            imagen_actual = imagenes_caminar_derecha[indice_anim]
-        elif ultima_direccion == "izquierda":
-            imagen_actual = imagenes_caminar_izquierda[indice_anim]
-        elif ultima_direccion == "arribaizquierda":
-            imagen_actual = imagenes_arriba_izquierda[indice_anim]
-        elif ultima_direccion == "arribaderecha":
-            imagen_actual = imagenes_arriba_derecha[indice_anim]
-        elif ultima_direccion == "abajoizquierda":
-            imagen_actual = imagenes_abajo_izquierda[indice_anim]
-        elif ultima_direccion == "abajoderecha":
-            imagen_actual = imagenes_abajo_derecha[indice_anim]
-    else:
-        if ultima_direccion == "arriba":
-            imagen_actual = quietoarriba
-        elif ultima_direccion == "abajo":
-            imagen_actual = quietoabajo
-        elif ultima_direccion == "derecha":
-            imagen_actual = quietoderecha
-        elif ultima_direccion == "izquierda":
-            imagen_actual = quietoizquierda
-        elif ultima_direccion == "arribaizquierda":
-            imagen_actual = arribaizquierdaquieto
-        elif ultima_direccion == "arribaderecha":
-            imagen_actual = arribaderechaquieto
-        elif ultima_direccion == "abajoizquierda":
-            imagen_actual = abajoizquierdaquieto
-        elif ultima_direccion == "abajoderecha":
-            imagen_actual = abajoderechaquieto
-
-    pantalla.blit(imagen_actual, (pos_x, pos_y))
-
-    # Actualizar y dibujar proyectiles
-    for proyectil in proyectiles:
-        if proyectil["direccion"] == "arriba":
-            proyectil["y"] -= velocidad_bala
-        elif proyectil["direccion"] == "abajo":
-            proyectil["y"] += velocidad_bala
-        elif proyectil["direccion"] == "izquierda":
-            proyectil["x"] -= velocidad_bala
-        elif proyectil["direccion"] == "derecha":
-            proyectil["x"] += velocidad_bala
-        elif proyectil["direccion"] == "arribaizquierda":
-            proyectil["x"] -= velocidad_bala / 1.414
-            proyectil["y"] -= velocidad_bala / 1.414
-        elif proyectil["direccion"] == "arribaderecha":
-            proyectil["x"] += velocidad_bala / 1.414
-            proyectil["y"] -= velocidad_bala / 1.414
-        elif proyectil["direccion"] == "abajoizquierda":
-            proyectil["x"] -= velocidad_bala / 1.414
-            proyectil["y"] += velocidad_bala / 1.414
-        elif proyectil["direccion"] == "abajoderecha":
-            proyectil["x"] += velocidad_bala / 1.414
-            proyectil["y"] += velocidad_bala / 1.414
-
-        # Dibuja el proyectil
-        pantalla.blit(bullet, (proyectil["x"], proyectil["y"]))
-
-    # Esto nos printea en pantalla el sonido
-    if current_sound_icon:
-        pantalla.blit(current_sound_icon, (650, 40))
-
-    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 628, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
-
-    pygame.display.update()  # Actualizar la pantalla
-    pygame.display.flip()
-    pygame.time.Clock().tick(60) #Me limita los fps a 60 que si no el juego hace cosas raras
