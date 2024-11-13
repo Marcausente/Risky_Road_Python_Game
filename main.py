@@ -124,13 +124,14 @@ tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
 def reiniciar_juego():
-    global puntuacion, enemigos, proyectiles, tiempo_spawn_enemigos, tiempo_espera
+    global puntuacion, enemigos, proyectiles, tiempo_spawn_enemigos, tiempo_espera, pos_x, pos_y
     puntuacion = 0
     enemigos = []
     proyectiles = []
     tiempo_spawn_enemigos = pygame.time.get_ticks()
     tiempo_espera = tiempo_espera_inicial
     pos_x, pos_y = ancho_pantalla // 2, alto_pantalla // 2
+    pantalla.blit(fondo, (0, 0))  # Reemplazar imagen_actual con fondo
 
 def pantalla_muerte():
     # Fondo de la pantalla de muerte
@@ -238,7 +239,7 @@ def detectar_colision():
     for enemigo in enemigos:
         distancia = math.hypot(enemigo["x"] - pos_x, enemigo["y"] - pos_y)
         if distancia < ancho_personaje / 2:
-            return True  # Colisión detectada
+            return True
     return False
 
 def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
@@ -248,17 +249,15 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
 
-while True:  # Bucle para mantener la pantalla abierta
+while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == KEYDOWN and event.key == K_SPACE:
-            # Disparar proyectil en la dirección actual
             proyectiles.append({"x": pos_x + ancho_personaje // 2, "y": pos_y + alto_personaje // 2, "direccion": ultima_direccion})
             shot_sound.play()
 
-    # Dibujar fondo y personaje
     pantalla.blit(fondo, (0, 0))
 
     # Genera enemigos cada cierto tiempo
