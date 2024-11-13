@@ -123,6 +123,40 @@ velocidad_bala = 10
 tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
+def reiniciar_juego():
+    global puntuacion, enemigos, proyectiles, tiempo_spawn_enemigos, tiempo_espera
+    puntuacion = 0
+    enemigos = []
+    proyectiles = []
+    tiempo_spawn_enemigos = pygame.time.get_ticks()
+    tiempo_espera = tiempo_espera_inicial
+    pos_x, pos_y = ancho_pantalla // 2, alto_pantalla // 2
+
+def pantalla_muerte():
+    # Fondo de la pantalla de muerte
+    pantalla.fill((0, 0, 0))  # Color negro de fondo
+    # Mostrar mensaje de "Juego Terminado"
+    muestra_texto(pantalla, consolas, "¡Juego Terminado!", ROJO, 50, ancho_pantalla // 2, alto_pantalla // 2 - 50)
+    # Mostrar puntuación final
+    muestra_texto(pantalla, consolas, f"Puntuación: {puntuacion}", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
+    # Instrucción para reiniciar o salir
+    muestra_texto(pantalla, consolas, "Presiona R para reiniciar o ESC para salir", (255, 255, 255), 20, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+
+    pygame.display.flip()  # Actualiza la pantalla
+
+    # Espera hasta que el jugador presione R o ESC
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_r:  # Reiniciar el juego
+                    reiniciar_juego()
+                    return
+                elif event.key == K_ESCAPE:  # Salir del juego
+                    pygame.quit()
+                    sys.exit()
 
 
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
@@ -239,8 +273,7 @@ while True:  # Bucle para mantener la pantalla abierta
     # Mover enemigos y verificar colisiones
     mover_enemigos()
     if detectar_colision():
-        pygame.quit()
-        sys.exit() # Fin del juego al detectar colisión
+        pantalla_muerte()
 
     detectar_colision_bala()
 
@@ -393,7 +426,7 @@ while True:  # Bucle para mantener la pantalla abierta
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
 
-    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 635, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
+    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 628, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
