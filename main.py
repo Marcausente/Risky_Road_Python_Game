@@ -11,6 +11,9 @@ tiempo_spawn_enemigos = pygame.time.get_ticks()
 tiempo_espera_inicial = 1200  # Tiempo inicial de spawn de enemigos
 tiempo_espera = tiempo_espera_inicial
 tiempo_spawn_enemigos = pygame.time.get_ticks()
+menu_musica_reproduciendose = False #controla si esta ya sondando la musica del menu para que no se repita al navegar entre las opciones
+
+
 
 pantalla = pygame.display.set_mode((750, 750))  # Ventana de 750x750
 pygame.display.set_caption("Risky Road")
@@ -163,13 +166,16 @@ def pantalla_muerte():
 
 
 def menu_inicio():
-    fondomenu = pygame.image.load("img/fondomenusol.png") #carga el fondo
-    fondomenu = pygame.transform.scale(fondomenu, (ancho_pantalla, alto_pantalla)) #Hace que el fondo sea tan grande como la pantalla
+    global menu_musica_reproduciendose
+    fondomenu = pygame.image.load("img/fondomenusol.png")
+    fondomenu = pygame.transform.scale(fondomenu, (ancho_pantalla, alto_pantalla))
 
-    pygame.mixer.music.load("Sounds/mainmenumusic.mp3")
-    pygame.mixer.music.play(-1)
-    pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.4) #Volmen del menu de inicio
-# Pantalla de menú inicial que se abrira al abrir el juego
+    if not menu_musica_reproduciendose:  # Verifica si la música ya está sonando
+        pygame.mixer.music.load("Sounds/mainmenumusic.mp3")
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.4)  # Volumen del menú de inicio
+        menu_musica_reproduciendose = True
+
     pantalla.blit(fondomenu, (0, 0))  # Dibujar la imagen de fondo
     muestra_texto(pantalla, consolas, "Risky Road", (1, 1, 1), 60, ancho_pantalla // 2, alto_pantalla // 2 - 100)
     muestra_texto(pantalla, consolas, "ENTER para jugar", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2)
@@ -193,8 +199,9 @@ def menu_inicio():
                 elif event.key == K_ESCAPE:  # Escape para salir del juego
                     pygame.quit()
                     sys.exit()
-                elif event.key == K_r:  # Si presionas O, se muestran los controles
-                    mostrar_controles()
+                elif event.key == K_r:  # Si presionas R, se muestran los controles
+                    mostrar_controles()  # Esto ahora no detiene el ciclo del menú
+                    return
 
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
     global proyectiles, enemigos, puntuacion
@@ -287,7 +294,6 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
 
 def mostrar_controles():
     pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color de fondo oscuro
-    # Aquí dibujamos un fondo para que no se quede negro
     muestra_texto(pantalla, consolas, "Controles del Juego", (255, 255, 255), 36, ancho_pantalla // 2, alto_pantalla // 2 - 150)
     muestra_texto(pantalla, consolas, "ESPACIO - Disparar", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 - 30)
     muestra_texto(pantalla, consolas, "W - Mover Arriba", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
@@ -299,18 +305,19 @@ def mostrar_controles():
 
     pygame.display.flip()
 
-    # Bucle de espera para volver al menú con ESC
+    # Bucle de espera para volver al menú con ESC o R
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == KEYDOWN:
-                if event.key == K_r:  # Vuelve al menú cuando presionas ESC
-                    menu_inicio()
-                    return
-
-    pygame.display.flip()
+                if event.key == K_r:  # Vuelve al menú cuando presionas R
+                    menu_inicio()  # Llama la función para mostrar el menú
+                    return  # Sale de la función de controles
+                elif event.key == K_ESCAPE:  # Escape para salir del juego
+                    pygame.quit()
+                    sys.exit()
 
 menu_inicio() #Genera el menu de inicio que hemos creado antes previamente a que se ejecute el bucle jugable
 
