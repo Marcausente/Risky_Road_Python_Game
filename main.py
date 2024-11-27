@@ -160,6 +160,28 @@ def pantalla_muerte():
                     sys.exit()
 
 
+def menu_inicio():
+    # Pantalla de menú inicial que se abrira al abrir el juego
+    pantalla.fill((0, 0, 0))  # Fondo negro
+    muestra_texto(pantalla, consolas, "Risky Road", (255, 255, 255), 50, ancho_pantalla // 2, alto_pantalla // 2 - 100)
+    muestra_texto(pantalla, consolas, "Presiona ENTER para jugar", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
+    muestra_texto(pantalla, consolas, "Presiona ESC para salir", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+
+    pygame.display.flip()
+
+    # Bucle de espera en el menú inicial para que el usuario introduzca algo
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_RETURN:  # Enter para iniciar el juego y que empiece ahi el bucle jugable
+                    return
+                elif event.key == K_ESCAPE:  # Escape para salir del juego y que se cierre
+                    pygame.quit()
+                    sys.exit()
+
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
     global proyectiles, enemigos, puntuacion
     nuevos_proyectiles = []
@@ -249,7 +271,9 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
 
-while True:
+menu_inicio() #Genera el menu de inicio que hemos creado antes previamente a que se ejecute el bucle jugable
+
+while True: #Bucle jugable, dentro de esto esta todo lo que pasa en la partida
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
