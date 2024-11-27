@@ -283,6 +283,19 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
 
+def mostrar_controles():
+    pantalla.fill((0, 0, 0))  # Pantalla negra para que se vean bien los controles
+    muestra_texto(pantalla, consolas, "Controles del Juego", (1, 1, 1), 36, ancho_pantalla // 2, alto_pantalla // 2 - 100)
+    muestra_texto(pantalla, consolas, "ESPACIO - Disparar", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2)
+    muestra_texto(pantalla, consolas, "W - Mover Arriba", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 30)
+    muestra_texto(pantalla, consolas, "S - Mover Abajo", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 60)
+    muestra_texto(pantalla, consolas, "A - Mover Izquierda", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 90)
+    muestra_texto(pantalla, consolas, "D - Mover Derecha", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 120)
+    muestra_texto(pantalla, consolas, "Flechas - Controles de Volumen", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 150)
+    muestra_texto(pantalla, consolas, "ESC para volver al menú", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 180)
+
+    pygame.display.flip()
+
 menu_inicio() #Genera el menu de inicio que hemos creado antes previamente a que se ejecute el bucle jugable
 
 while True: #Bucle jugable, dentro de esto esta todo lo que pasa en la partida
