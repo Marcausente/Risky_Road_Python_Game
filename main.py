@@ -23,7 +23,7 @@ fondo = pygame.image.load("img/GameBackground.jpg")
 pantalla.blit(fondo, (0, 0))
 # Carga de la bala
 bullet = pygame.image.load("img/bullet.png")
-bullet = pygame.transform.scale(bullet, (20, 20))
+bullet = pygame.transform.scale(bullet, (20, 20)) #Como la bala de por si es grande esto la pone en un tamaño decente
 
 
 
@@ -145,7 +145,7 @@ def pantalla_muerte():
 
     pygame.display.flip()  # Actualiza la pantalla
 
-    # Espera hasta que el jugador presione R o ESC
+    # Mostaramos la pantalla de muerte hasta que se presione r o esc
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -169,7 +169,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
         impacto = False
         for enemigo in enemigos:
             distancia = math.hypot(proyectil["x"] - enemigo["x"], proyectil["y"] - enemigo["y"])
-            if distancia < 40: #Esto es el tamaño del enemigo que generara el impacto, cuanto mas lo suba mayor sera el rango de impacto
+            if distancia < 40: #Esto es el tamaño del enemigo que generara el impacto, cuanto mas lo suba mayor sera el rango de impacto, esta adaptada ahora al tamaño que he puesto a las dianas
                 impacto = True
                 puntuacion += 10
                 break
@@ -190,7 +190,7 @@ def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las ba
 # Esto nos carga la musica de fondo y los sonidos
 pygame.mixer.music.load("Sounds/BSO2.mp3")
 shot_sound = pygame.mixer.Sound("Sounds/ShotSound.mp3")
-shot_sound.set_volume(0.5)
+shot_sound.set_volume(0.6)
 pygame.mixer.music.play(-1)  # -1 hace que la música se reproduzca de forma infinita
 
 # Esto es para hacer los controles de volumen, para que suba o baje según queramos
