@@ -288,14 +288,14 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
 def mostrar_controles():
     pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color de fondo oscuro
     # Aquí dibujamos un fondo para que no se quede negro
-    muestra_texto(pantalla, consolas, "Controles del Juego", (255, 255, 255), 36, ancho_pantalla // 2, alto_pantalla // 2 - 100)
-    muestra_texto(pantalla, consolas, "ESPACIO - Disparar", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2)
-    muestra_texto(pantalla, consolas, "W - Mover Arriba", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 30)
-    muestra_texto(pantalla, consolas, "S - Mover Abajo", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 60)
-    muestra_texto(pantalla, consolas, "A - Mover Izquierda", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 90)
-    muestra_texto(pantalla, consolas, "D - Mover Derecha", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 120)
-    muestra_texto(pantalla, consolas, "Flechas - Controles de Volumen", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 150)
-    muestra_texto(pantalla, consolas, "ESC para volver al menú", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 180)
+    muestra_texto(pantalla, consolas, "Controles del Juego", (255, 255, 255), 36, ancho_pantalla // 2, alto_pantalla // 2 - 150)
+    muestra_texto(pantalla, consolas, "ESPACIO - Disparar", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 - 30)
+    muestra_texto(pantalla, consolas, "W - Mover Arriba", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
+    muestra_texto(pantalla, consolas, "S - Mover Abajo", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 30)
+    muestra_texto(pantalla, consolas, "A - Mover Izquierda", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 60)
+    muestra_texto(pantalla, consolas, "D - Mover Derecha", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 90)
+    muestra_texto(pantalla, consolas, "Flechas - Controles de Volumen", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 120)
+    muestra_texto(pantalla, consolas, "R para volver al menú", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 150)
 
     pygame.display.flip()
 
