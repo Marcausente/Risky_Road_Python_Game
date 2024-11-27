@@ -61,7 +61,7 @@ diana = pygame.image.load("img/diana.png")
 #FUENTE DE LETRAS
 consolas = pygame.font.match_font("consolas")
 
-#COLORES (Esto para los puntos)
+#COLORES (Esto para los puntos, titulos y esas cosas)
 ROJO = (189, 23, 20, 1)
 
 # Redimensionamos las imágenes del personaje
@@ -136,8 +136,8 @@ def reiniciar_juego():
 def pantalla_muerte():
     # Fondo de la pantalla de muerte
     pantalla.fill((0, 0, 0))  # Color negro de fondo
-    # Mostrar mensaje de "Juego Terminado"
-    muestra_texto(pantalla, consolas, "¡Juego Terminado!", ROJO, 50, ancho_pantalla // 2, alto_pantalla // 2 - 50)
+    # Cuando te mueres te pritnea el mensaje de juego terminado en rojo que habiamos declarado los colores arriba
+    muestra_texto(pantalla, consolas, "¡Has muerto!", ROJO, 50, ancho_pantalla // 2, alto_pantalla // 2 - 50)
     # Mostrar puntuación final
     muestra_texto(pantalla, consolas, f"Puntuación: {puntuacion}", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
     # Instrucción para reiniciar o salir
