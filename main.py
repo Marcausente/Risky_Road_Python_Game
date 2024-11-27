@@ -14,7 +14,7 @@ tiempo_spawn_enemigos = pygame.time.get_ticks()
 
 pantalla = pygame.display.set_mode((750, 750))  # Ventana de 750x750
 pygame.display.set_caption("Risky Road")
-logo = pygame.image.load("img/westernlogo.png")  # Carga el logo
+logo = pygame.image.load("img/westernlogo.png")  # Carga el logo el icono de ejecución
 pygame.display.set_icon(logo)
 
 # Carga el fondo y el personaje
@@ -163,11 +163,14 @@ def pantalla_muerte():
 
 
 def menu_inicio():
-    # Pantalla de menú inicial que se abrira al abrir el juego
-    pantalla.fill((0, 0, 0))  # Fondo negro
-    muestra_texto(pantalla, consolas, "Risky Road", (255, 255, 255), 50, ancho_pantalla // 2, alto_pantalla // 2 - 100)
-    muestra_texto(pantalla, consolas, "Presiona ENTER para jugar", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2)
-    muestra_texto(pantalla, consolas, "Presiona ESC para salir", (255, 255, 255), 30, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+    fondomenu = pygame.image.load("img/menuclarofin.webp") #carga el fondo
+    fondomenu = pygame.transform.scale(fondomenu, (ancho_pantalla, alto_pantalla)) #Hace que el fondo sea tan grande como la pantalla
+
+# Pantalla de menú inicial que se abrira al abrir el juego
+    pantalla.blit(fondomenu, (0, 0))  # Dibujar la imagen de fondo
+    muestra_texto(pantalla, consolas, "Risky Road", (1, 1, 1), 50, ancho_pantalla // 2, alto_pantalla // 2 - 100)
+    muestra_texto(pantalla, consolas, "Presiona ENTER para jugar", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2)
+    muestra_texto(pantalla, consolas, "Presiona ESC para salir", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 50)
 
     pygame.display.flip()
 
