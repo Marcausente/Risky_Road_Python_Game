@@ -163,14 +163,14 @@ def pantalla_muerte():
 
 
 def menu_inicio():
-    fondomenu = pygame.image.load("img/menuclarofin.webp") #carga el fondo
+    fondomenu = pygame.image.load("img/fondomenusol.png") #carga el fondo
     fondomenu = pygame.transform.scale(fondomenu, (ancho_pantalla, alto_pantalla)) #Hace que el fondo sea tan grande como la pantalla
 
 # Pantalla de menú inicial que se abrira al abrir el juego
     pantalla.blit(fondomenu, (0, 0))  # Dibujar la imagen de fondo
-    muestra_texto(pantalla, consolas, "Risky Road", (1, 1, 1), 50, ancho_pantalla // 2, alto_pantalla // 2 - 100)
-    muestra_texto(pantalla, consolas, "Presiona ENTER para jugar", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2)
-    muestra_texto(pantalla, consolas, "Presiona ESC para salir", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+    muestra_texto(pantalla, consolas, "Risky Road", (1, 1, 1), 60, ancho_pantalla // 2, alto_pantalla // 2 - 100)
+    muestra_texto(pantalla, consolas, "ENTER para jugar", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2)
+    muestra_texto(pantalla, consolas, "ESC para salir", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2 + 50)
 
     pygame.display.flip()
 
