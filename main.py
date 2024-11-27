@@ -123,15 +123,15 @@ velocidad_bala = 10
 tiempo_icono_visible = 10000  # Tiempo en el que el icono será visible
 icono_visible = False
 
-def reiniciar_juego():
+def reiniciar_juego():  #Resetea todo para poder volver a empezar la partida limpio en caso de que el user quiera
     global puntuacion, enemigos, proyectiles, tiempo_spawn_enemigos, tiempo_espera, pos_x, pos_y
-    puntuacion = 0
-    enemigos = []
-    proyectiles = []
-    tiempo_spawn_enemigos = pygame.time.get_ticks()
+    puntuacion = 0 #Resetear puntuacion
+    enemigos = [] #Resetea los enemigos que habia
+    proyectiles = [] #Resetea los proyectiles
+    tiempo_spawn_enemigos = pygame.time.get_ticks() #Vuelve la dificultad del juego facil otra vez
     tiempo_espera = tiempo_espera_inicial
     pos_x, pos_y = ancho_pantalla // 2, alto_pantalla // 2
-    pantalla.blit(fondo, (0, 0))  # Reemplazar imagen_actual con fondo
+    pantalla.blit(fondo, (0, 0))  # Reemplazar imagen actual con fondo
 
 def pantalla_muerte():
     # Fondo de la pantalla de muerte
@@ -156,8 +156,10 @@ def pantalla_muerte():
                     reiniciar_juego()
                     return
                 elif event.key == K_ESCAPE:  # Salir del juego
-                    pygame.quit()
-                    sys.exit()
+                    menu_inicio() # te devuelve al menu de inicio y ahi si quieres ya puedes salir
+                    reiniciar_juego() #Te lleva a la funcion para resetear las cosas
+                    return
+
 
 
 def menu_inicio():
