@@ -185,14 +185,16 @@ def menu_inicio():
                 pygame.quit()
                 sys.exit()
             elif event.type == KEYDOWN:
-                if event.key == K_RETURN:  # Enter para iniciar el juego y que empiece ahi el bucle jugable
+                if event.key == K_RETURN:  # Enter para iniciar el juego
                     pygame.mixer.music.stop()  # Detiene la música del menú
                     pygame.mixer.music.load("Sounds/GameMusic.mp3")  # Carga la música de juego
                     pygame.mixer.music.play(-1)  # Reproduce en loop
                     return
-                elif event.key == K_ESCAPE:  # Escape para salir del juego y que se cierre
+                elif event.key == K_ESCAPE:  # Escape para salir del juego
                     pygame.quit()
                     sys.exit()
+                elif event.key == K_r:  # Si presionas O, se muestran los controles
+                    mostrar_controles()
 
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
     global proyectiles, enemigos, puntuacion
@@ -284,8 +286,9 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     pantalla.blit(superficie, rectangulo)
 
 def mostrar_controles():
-    pantalla.fill((0, 0, 0))  # Pantalla negra para que se vean bien los controles
-    muestra_texto(pantalla, consolas, "Controles del Juego", (1, 1, 1), 36, ancho_pantalla // 2, alto_pantalla // 2 - 100)
+    pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color de fondo oscuro
+    # Aquí dibujamos un fondo para que no se quede negro
+    muestra_texto(pantalla, consolas, "Controles del Juego", (255, 255, 255), 36, ancho_pantalla // 2, alto_pantalla // 2 - 100)
     muestra_texto(pantalla, consolas, "ESPACIO - Disparar", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2)
     muestra_texto(pantalla, consolas, "W - Mover Arriba", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 30)
     muestra_texto(pantalla, consolas, "S - Mover Abajo", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 60)
@@ -293,6 +296,19 @@ def mostrar_controles():
     muestra_texto(pantalla, consolas, "D - Mover Derecha", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 120)
     muestra_texto(pantalla, consolas, "Flechas - Controles de Volumen", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 150)
     muestra_texto(pantalla, consolas, "ESC para volver al menú", (1, 1, 1), 30, ancho_pantalla // 2, alto_pantalla // 2 + 180)
+
+    pygame.display.flip()
+
+    # Bucle de espera para volver al menú con ESC
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_r:  # Vuelve al menú cuando presionas ESC
+                    menu_inicio()
+                    return
 
     pygame.display.flip()
 
