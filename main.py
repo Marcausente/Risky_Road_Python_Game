@@ -25,8 +25,6 @@ pantalla.blit(fondo, (0, 0))
 bullet = pygame.image.load("img/bullet.png")
 bullet = pygame.transform.scale(bullet, (20, 20))
 
-vidas = 3
-
 
 
 saved = 1.0  # Variable para guardar el sonido actual, la usamos luego en controles
@@ -208,11 +206,6 @@ sound_on = pygame.transform.scale(sound_on, (60, 60))
 # Variable para el icono de sonido actual
 current_sound_icon = None
 
-def mostrar_vidas():
-    fuente = pygame.font.SysFont('Consolas', 30)
-    texto_vidas = fuente.render(f'Vidas: {vidas}', True, (255, 0, 0))
-    pantalla.blit(texto_vidas, (10, 10))  # Posición en la esquina superior izquierda
-
 def generar_enemigo():
 
     # Esto genera un enemigo random en estas posiciones: 0=arriba, 1=abajo, 2=izquierda, 3=derecha
@@ -243,15 +236,9 @@ def mover_enemigos():
             enemigo["y"] += enemigo["velocidad"] * (dy / distancia)
 
 def detectar_colision():
-    global vidas
     for enemigo in enemigos:
         distancia = math.hypot(enemigo["x"] - pos_x, enemigo["y"] - pos_y)
         if distancia < ancho_personaje / 2:
-            vidas -= 1
-            if vidas > 0:
-                reiniciar_juego()
-            else:
-                pantalla_muerte()
             return True
     return False
 
@@ -261,12 +248,6 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y):
     rectangulo = superficie.get_rect()
     rectangulo.center = (x, y)
     pantalla.blit(superficie, rectangulo)
-
-
-
-
-#BUCLE JUGABLE DEL PROGRAMA A PARTIR DE AQUI:
-
 
 while True:
     for event in pygame.event.get():
@@ -278,7 +259,6 @@ while True:
             shot_sound.play()
 
     pantalla.blit(fondo, (0, 0))
-    mostrar_vidas()
 
     # Genera enemigos cada cierto tiempo
     if pygame.time.get_ticks() - tiempo_spawn_enemigos > tiempo_espera:
@@ -296,6 +276,7 @@ while True:
 
     detectar_colision_bala()
 
+    pantalla.blit(fondo, (0, 0))
     for enemigo in enemigos:
         pantalla.blit(diana, (enemigo["x"], enemigo["y"]))
 
