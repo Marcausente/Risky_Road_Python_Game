@@ -355,10 +355,11 @@ while True:
 
     if movido:
         tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - tiempo_animacion > 200:  # Cambia la imagen cada 200 ms
+        if tiempo_actual - tiempo_animacion > 200:  # Cambia la imagen cada 200 ms, esto para hacer la impresion de que camina, el tiempo lo podria cambiar para que sea mas rapido o lento (Ojo la animacion no el movimiento que se mueve a la misma velocidad)
             indice_anim = (indice_anim + 1) % len(imagenes_caminar_arriba)  # Cambia la imagen
             tiempo_animacion = tiempo_actual
 
+        #Basicamente esto es lo que carga las imagenes del personaje, depende de la dirección a la que este yendo se carga una imagen u otra
         if ultima_direccion == "arriba":
             imagen_actual = imagenes_caminar_arriba[indice_anim]
         elif ultima_direccion == "abajo":
@@ -375,7 +376,7 @@ while True:
             imagen_actual = imagenes_abajo_izquierda[indice_anim]
         elif ultima_direccion == "abajoderecha":
             imagen_actual = imagenes_abajo_derecha[indice_anim]
-    else:
+    else: #Esto es en caso de que no detecte movimiento, tambén muestra las imagenes pero en concreto la quieta
         if ultima_direccion == "arriba":
             imagen_actual = quietoarriba
         elif ultima_direccion == "abajo":
@@ -393,9 +394,9 @@ while True:
         elif ultima_direccion == "abajoderecha":
             imagen_actual = abajoderechaquieto
 
-    pantalla.blit(imagen_actual, (pos_x, pos_y))
+    pantalla.blit(imagen_actual, (pos_x, pos_y)) #Muestra la imagen del personaje en la posicion en la que estemos
 
-    # Actualizar y dibujar proyectiles
+    # Actualizar y dibujar proyectiles, basicamente genera la bala hacia la dirección a la que estemos yendo, tuve un bug con esto ya que la bala se genera desde el centro no la pistola y no he sabido como fixearlo
     for proyectil in proyectiles:
         if proyectil["direccion"] == "arriba":
             proyectil["y"] -= velocidad_bala
@@ -421,11 +422,11 @@ while True:
         # Dibuja el proyectil
         pantalla.blit(bullet, (proyectil["x"], proyectil["y"]))
 
-    # Esto nos printea en pantalla el sonido
+    # Esto nos printea en la pantalla los iconos del sonido en caso de que queira bajarlo, subirlo, mutearlo o desmutearlo, para tener control en la musica que va sonando, esto se hace con las flechas
     if current_sound_icon:
         pantalla.blit(current_sound_icon, (650, 40))
 
-    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 628, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado
+    muestra_texto(pantalla, consolas, str(puntuacion).zfill(6), ROJO, 40, 628, 75) #Printea el texto con los valores que le hemos puesto y el zfill hace que aparezcan 7 zeros al lado, esto le da un rollito mas arcade que mola, como no la estamos redondeando aparece mas pixelada, esto creo que queda mejor para darle una estetica retro por eso no lo he cambiado
 
     pygame.display.update()  # Actualizar la pantalla
     pygame.display.flip()
