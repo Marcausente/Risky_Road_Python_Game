@@ -194,13 +194,13 @@ def menu_inicio():
                 if event.key == K_RETURN:  # Enter para iniciar el juego
                     pygame.mixer.music.stop()  # Detiene la música del menú
                     pygame.mixer.music.load("Sounds/GameMusic.mp3")  # Carga la música de juego
-                    pygame.mixer.music.play(-1)  # Reproduce en loop
+                    pygame.mixer.music.play(-1)  # Reproduce en loop la musiquita
                     return
                 elif event.key == K_ESCAPE:  # Escape para salir del juego
                     pygame.quit()
                     sys.exit()
                 elif event.key == K_r:  # Si presionas R, se muestran los controles
-                    mostrar_controles()  # Esto ahora no detiene el ciclo del menú
+                    mostrar_controles()
                     return
 
 def detectar_colision_bala(): #Esto es lo que detectara las colisiones de las balas
@@ -305,17 +305,17 @@ def mostrar_controles():
 
     pygame.display.flip()
 
-    # Bucle de espera para volver al menú con ESC o R
+    # Bucle de espera para volver al menú con r
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == KEYDOWN:
-                if event.key == K_r:  # Vuelve al menú cuando presionas R
+                if event.key == K_r:  # Vas al menu cuando le das a la r
                     menu_inicio()  # Llama la función para mostrar el menú
-                    return  # Sale de la función de controles
-                elif event.key == K_ESCAPE:  # Escape para salir del juego
+                    return
+                elif event.key == K_ESCAPE:  # Escape para salir del juego (No esta puesto pero para salir por si acaso)
                     pygame.quit()
                     sys.exit()
 
