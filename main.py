@@ -166,11 +166,15 @@ def menu_inicio():
     fondomenu = pygame.image.load("img/fondomenusol.png") #carga el fondo
     fondomenu = pygame.transform.scale(fondomenu, (ancho_pantalla, alto_pantalla)) #Hace que el fondo sea tan grande como la pantalla
 
+    pygame.mixer.music.load("Sounds/mainmenumusic.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.4) #Volmen del menu de inicio
 # Pantalla de menú inicial que se abrira al abrir el juego
     pantalla.blit(fondomenu, (0, 0))  # Dibujar la imagen de fondo
     muestra_texto(pantalla, consolas, "Risky Road", (1, 1, 1), 60, ancho_pantalla // 2, alto_pantalla // 2 - 100)
     muestra_texto(pantalla, consolas, "ENTER para jugar", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2)
-    muestra_texto(pantalla, consolas, "ESC para salir", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+    muestra_texto(pantalla, consolas, "R para controles", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2 + 50)
+    muestra_texto(pantalla, consolas, "ESC para salir", (1, 1, 1), 38, ancho_pantalla // 2, alto_pantalla // 2 + 100)
 
     pygame.display.flip()
 
@@ -182,6 +186,9 @@ def menu_inicio():
                 sys.exit()
             elif event.type == KEYDOWN:
                 if event.key == K_RETURN:  # Enter para iniciar el juego y que empiece ahi el bucle jugable
+                    pygame.mixer.music.stop()  # Detiene la música del menú
+                    pygame.mixer.music.load("Sounds/GameMusic.mp3")  # Carga la música de juego
+                    pygame.mixer.music.play(-1)  # Reproduce en loop
                     return
                 elif event.key == K_ESCAPE:  # Escape para salir del juego y que se cierre
                     pygame.quit()
