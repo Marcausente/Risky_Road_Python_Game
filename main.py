@@ -322,26 +322,26 @@ while True:
         ultima_direccion = "derecha"
         movido = True
 
-    # Control de volumen
+    # Control de volumen, para que el usuario pueda quitar musica y esas cosillas
     if teclas[K_DOWN] and pygame.mixer_music.get_volume() > 0.0:  # Si se presiona flecha abajo y la música no está mute
         pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() - 0.01)
         current_sound_icon = sound_down
         if pygame.mixer_music.get_volume() > 0.0:
-            saved = pygame.mixer.music.get_volume()
+            saved = pygame.mixer.music.get_volume() #Guarda donde estaba el sonido por si el usuario quiere volver a activarlo con la flecha derecha
         icono_visible = True
         tiempo_icono_visible = pygame.time.get_ticks()
-    elif teclas[K_UP] and pygame.mixer_music.get_volume() < 1.0:
+    elif teclas[K_UP] and pygame.mixer_music.get_volume() < 1.0: #Si presionas la flecha arriba el volumen se sube 0.1
         pygame.mixer_music.set_volume(pygame.mixer.music.get_volume() + 0.01)
         current_sound_icon = sound_up
         saved = pygame.mixer.music.get_volume()
-    elif teclas[K_RIGHT]:
+    elif teclas[K_RIGHT]: #Cree una variable que te guarde el sonido donde estaba, si de las a la derecha te vuelve a poner el sonido como estaba antes de desactivarlo
         pygame.mixer_music.set_volume(saved)
         current_sound_icon = sound_on
-    elif teclas[K_LEFT]:
+    elif teclas[K_LEFT]: #Flecha a la izquierda te mutea el sonido
         pygame.mixer_music.set_volume(0.0)
         current_sound_icon = sound_off
     else:
-        current_sound_icon = None  # Reset icon if no volume keys are pressed
+        current_sound_icon = None
 
     # Limitar el movimiento a los bordes de la pantalla
     if pos_x < 0:
